@@ -1,0 +1,1210 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BGMS — Facilities & Services Management</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link href="assets/css/styles.css" rel="stylesheet">
+  <link href="assets/css/responsive.css" rel="stylesheet">
+
+  <style>
+    /* Facility-specific styles */
+    .facility-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    
+    .facility-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+    
+    .facility-status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    
+    .status-available { background-color: #198754; }
+    .status-booked { background-color: #dc3545; }
+    .status-maintenance { background-color: #ffc107; }
+    .status-closed { background-color: #6c757d; }
+    
+    .booking-slot {
+      padding: 8px 12px;
+      margin: 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .booking-slot:hover {
+      transform: scale(1.02);
+    }
+    
+    .slot-available {
+      background-color: #d1e7dd;
+      color: #0f5132;
+      border: 1px solid #badbcc;
+    }
+    
+    .slot-booked {
+      background-color: #f8d7da;
+      color: #842029;
+      border: 1px solid #f5c2c7;
+    }
+    
+    .slot-selected {
+      background-color: #cfe2ff;
+      color: #084298;
+      border: 2px solid #0d6efd;
+    }
+    
+    .time-slot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    
+    .calendar-container {
+      height: 600px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .fc-daygrid-event {
+      font-size: 0.8em;
+      padding: 2px 4px;
+    }
+    
+    .facility-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      margin: 0 auto 10px;
+    }
+    
+    .capacity-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+    }
+    
+    .pricing-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(217, 183, 59, 0.9);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <!-- TOPBAR -->
+  <header class="topbar d-flex align-items-center justify-content-between px-3">
+    <div class="topbar-header px-3 py-1 d-flex align-items-center gap-2">
+      <div class="admin-logo-box">
+        <img src="assets/images/logo.png" alt="">
+      </div>
+    </div>
+
+    <!-- RIGHT ACTIONS -->
+    <div style="flex-direction: column;" class="d-flex  align-items-center gap-3">
+      <div class="role-switcher">
+        <select id="roleSelect" class="form-select form-select-sm">
+          <option value="superadmin">Super Admin</option>
+          <option value="finance">Finance Officer</option>
+          <option value="membership">Membership Officer</option>
+        </select>
+      </div>
+
+      <div class="profile-dropdown dropdown">
+        <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle me-1"></i>My Profile
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">My Profile</a></li>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </div>
+       <button class="mobile-menu-toggle mobile-only ms-2" id="mobileMenuToggle">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-root d-flex">
+    <!-- SIDEBAR -->
+    <aside class="sidebar d-flex flex-column" id="sidebar">
+      <nav class="nav flex-column px-2" id="main-nav">
+        <a class="nav-link d-flex align-items-center" data-role="all" href="superadmin.html">
+          <i class="bi bi-speedometer2 me-2"></i><span>Dashboard</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="all" href="members.html">
+          <i class="bi bi-people-fill me-2"></i><span>Members</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="all" href="users.html">
+          <i class="bi bi-person-badge me-2"></i><span>Users</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="all" href="billing.html">
+          <i class="bi bi-receipt-cutoff me-2"></i><span>Billing</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="all" href="payments.html">
+          <i class="bi bi-credit-card me-2"></i><span>Payments</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="all" href="reports.html">
+          <i class="bi bi-file-bar-graph me-2"></i><span>Reports</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="all" href="accounting.html">
+          <i class="bi bi-bank me-2"></i><span>Accounting</span>
+        </a>
+        <a class="nav-link d-flex align-items-center active" data-role="all" href="facilities.html">
+          <i class="bi bi-card-checklist me-2"></i><span>Facilities</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="finance" href="residential.html">
+          <i class="bi bi-houses me-2"></i><span>Residential</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="finance" href="utilities.html">
+          <i class="bi bi-lightning-charge me-2"></i><span>Utilities</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="admin" href="cashflow.html">
+          <i class="bi bi-cash-stack me-2"></i><span>Cash Flow</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" data-role="admin" href="admin-settings.html">
+          <i class="bi bi-gear me-2"></i><span>Admin Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div id="main" class="main flex-grow-1">
+      <main class="content p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="mb-0">Facilities & Services Management</h2>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#addFacilityModal">
+              <i class="bi bi-plus-circle me-1"></i> Add Facility
+            </button>
+            <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#newBookingModal">
+              <i class="bi bi-calendar-plus me-1"></i> New Booking
+            </button>
+          </div>
+        </div>
+
+        <!-- FACILITY QUICK STATS -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Total Facilities</div>
+                <div class="stat-value" id="totalFacilities">12</div>
+                <small class="text-muted">Active: <span id="activeFacilities">10</span></small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Today's Bookings</div>
+                <div class="stat-value text-primary" id="todayBookings">42</div>
+                <small class="text-muted">Capacity: <span id="todayCapacity">85%</span></small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Facility Revenue</div>
+                <div class="stat-value text-success" id="facilityRevenue">PKR 245,800</div>
+                <small class="text-muted">This Month</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Maintenance Due</div>
+                <div class="stat-value text-warning" id="maintenanceDue">3</div>
+                <small class="text-muted">Facilities needing attention</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FACILITIES NAVIGATION -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button class="btn btn-outline-primary active" data-view="facilityGrid">
+                <i class="bi bi-grid me-1"></i> All Facilities
+              </button>
+              <button class="btn btn-outline-primary" data-view="bookingCalendar">
+                <i class="bi bi-calendar-week me-1"></i> Booking Calendar
+              </button>
+              <button class="btn btn-outline-primary" data-view="pricingRules">
+                <i class="bi bi-tags me-1"></i> Pricing Rules
+              </button>
+              <button class="btn btn-outline-primary" data-view="maintenance">
+                <i class="bi bi-tools me-1"></i> Maintenance
+              </button>
+              <button class="btn btn-outline-primary" data-view="reports">
+                <i class="bi bi-bar-chart me-1"></i> Reports
+              </button>
+              <button class="btn btn-outline-primary" data-view="bulkBookings">
+                <i class="bi bi-calendar-event me-1"></i> Bulk Bookings
+              </button>
+            </div>
+
+            <!-- Quick Filters -->
+            <div class="row g-3">
+              <div class="col-md-4">
+                <select class="form-select" id="facilityCategoryFilter">
+                  <option value="">All Categories</option>
+                  <option value="gym">Gym & Fitness</option>
+                  <option value="sports">Sports Courts</option>
+                  <option value="pool">Swimming Pool</option>
+                  <option value="event">Event Spaces</option>
+                  <option value="dining">Dining</option>
+                  <option value="other">Other Facilities</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <select class="form-select" id="facilityStatusFilter">
+                  <option value="">All Status</option>
+                  <option value="available">Available</option>
+                  <option value="booked">Booked</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="date" class="form-control" id="dateFilter" value="">
+                  <button class="btn btn-outline-secondary" id="filterTodayBtn">Today</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FACILITIES GRID VIEW (Default) -->
+        <div id="facilityGridView" class="facilities-view">
+          <div class="row g-3" id="facilitiesGrid">
+            <!-- Facilities will be populated here -->
+          </div>
+        </div>
+
+        <!-- BOOKING CALENDAR VIEW -->
+        <div id="bookingCalendarView" class="facilities-view" style="display: none;">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Facility Booking Calendar</h5>
+                <div class="btn-group">
+                  <select class="form-select form-select-sm w-auto" id="calendarFacilityFilter">
+                    <option value="">All Facilities</option>
+                    <!-- Facilities will be populated dynamically -->
+                  </select>
+                </div>
+              </div>
+              <div class="calendar-container" id="facilityCalendar"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRICING RULES VIEW -->
+        <div id="pricingRulesView" class="facilities-view" style="display: none;">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Pricing Rules Management</h5>
+                <button class="btn btn-sm btn-gold" data-bs-toggle="modal" data-bs-target="#addPricingRuleModal">
+                  <i class="bi bi-plus-circle me-1"></i> Add Pricing Rule
+                </button>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Facility</th>
+                      <th>Pricing Type</th>
+                      <th>Peak Hours</th>
+                      <th>Off-Peak Hours</th>
+                      <th>Weekend Rate</th>
+                      <th>Event Rate</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pricingRulesTable">
+                    <!-- Pricing rules will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAINTENANCE VIEW -->
+        <div id="maintenanceView" class="facilities-view" style="display: none;">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Facility Maintenance</h5>
+                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#scheduleMaintenanceModal">
+                  <i class="bi bi-tools me-1"></i> Schedule Maintenance
+                </button>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                      <h6 class="mb-0">Scheduled Maintenance</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th>Facility</th>
+                              <th>Date</th>
+                              <th>Duration</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody id="maintenanceScheduleTable">
+                            <!-- Maintenance schedule will be populated here -->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header bg-danger text-white">
+                      <h6 class="mb-0">Maintenance Due</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th>Facility</th>
+                              <th>Last Service</th>
+                              <th>Next Due</th>
+                              <th>Priority</th>
+                            </tr>
+                          </thead>
+                          <tbody id="maintenanceDueTable">
+                            <!-- Maintenance due items will be populated here -->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card mt-3">
+                <div class="card-body">
+                  <h6>Maintenance History</h6>
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Facility</th>
+                          <th>Type</th>
+                          <th>Cost</th>
+                          <th>Service By</th>
+                          <th>Notes</th>
+                        </tr>
+                      </thead>
+                      <tbody id="maintenanceHistoryTable">
+                        <!-- Maintenance history will be populated here -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORTS VIEW -->
+        <div id="reportsView" class="facilities-view" style="display: none;">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Facility Reports</h5>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-outline-primary" id="exportFacilityReports">
+                    <i class="bi bi-download me-1"></i> Export
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary" id="printFacilityReports">
+                    <i class="bi bi-printer me-1"></i> Print
+                  </button>
+                </div>
+              </div>
+              
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Facility Usage (Last 30 Days)</h6>
+                      <div class="chart-container" style="height: 250px;">
+                        <canvas id="facilityUsageChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Revenue by Facility</h6>
+                      <div class="chart-container" style="height: 250px;">
+                        <canvas id="facilityRevenueChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card">
+                <div class="card-body">
+                  <h6>Detailed Facility Performance</h6>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Facility</th>
+                          <th>Bookings</th>
+                          <th>Usage Hours</th>
+                          <th>Revenue</th>
+                          <th>Occupancy Rate</th>
+                          <th>Peak Usage</th>
+                          <th>Member Satisfaction</th>
+                        </tr>
+                      </thead>
+                      <tbody id="facilityPerformanceTable">
+                        <!-- Facility performance data will be populated here -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BULK BOOKINGS VIEW -->
+        <div id="bulkBookingsView" class="facilities-view" style="display: none;">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Bulk Event Bookings</h5>
+                <button class="btn btn-sm btn-gold" data-bs-toggle="modal" data-bs-target="#createBulkBookingModal">
+                  <i class="bi bi-calendar-event me-1"></i> Create Bulk Booking
+                </button>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Event Name</th>
+                      <th>Facilities</th>
+                      <th>Date</th>
+                      <th>Duration</th>
+                      <th>Participants</th>
+                      <th>Status</th>
+                      <th>Revenue</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bulkBookingsTable">
+                    <!-- Bulk bookings will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <div class="card mt-3">
+                <div class="card-body">
+                  <h6>Event Calendar</h6>
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Event</th>
+                          <th>Facilities</th>
+                          <th>Time</th>
+                          <th>Organizer</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="eventCalendarTable">
+                        <!-- Event calendar will be populated here -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="row g-3 mt-4">
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="card-title">Quick Bookings</h6>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#quickBookingModal">
+                    <i class="bi bi-calendar-plus me-2"></i> Quick Booking
+                  </button>
+                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#checkAvailabilityModal">
+                    <i class="bi bi-search me-2"></i> Check Availability
+                  </button>
+                  <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#cancelBookingModal">
+                    <i class="bi bi-calendar-x me-2"></i> Cancel Booking
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="card-title">Today's Schedule</h6>
+                <div class="list-group list-group-flush" id="todaySchedule">
+                  <!-- Today's schedule will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="card-title">Top Performing Facilities</h6>
+                <div class="list-group list-group-flush" id="topFacilities">
+                  <!-- Top facilities will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ADD FACILITY MODAL -->
+  <div class="modal fade" id="addFacilityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Facility</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addFacilityForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Facility Name *</label>
+                <input type="text" class="form-control" id="facilityName" required placeholder="e.g., Main Gym">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Category *</label>
+                <select class="form-select" id="facilityCategory" required>
+                  <option value="">Select Category</option>
+                  <option value="gym">Gym & Fitness</option>
+                  <option value="sports">Sports Courts</option>
+                  <option value="pool">Swimming Pool</option>
+                  <option value="event">Event Spaces</option>
+                  <option value="dining">Dining</option>
+                  <option value="other">Other Facilities</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Capacity *</label>
+                <input type="number" class="form-control" id="facilityCapacity" required min="1" placeholder="Maximum number of people">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Icon/Color</label>
+                <div class="input-group">
+                  <select class="form-select" id="facilityIcon">
+                    <option value="🏋️">🏋️ Gym</option>
+                    <option value="🎾">🎾 Tennis</option>
+                    <option value="🏊">🏊 Pool</option>
+                    <option value="🎯">🎯 Events</option>
+                    <option value="🍽️">🍽️ Dining</option>
+                  </select>
+                  <input type="color" class="form-control form-control-color" id="facilityColor" value="#198754">
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Default Hourly Rate (PKR) *</label>
+                <input type="number" class="form-control" id="defaultRate" required min="0" step="100" placeholder="e.g., 1000">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Daily Rate (PKR)</label>
+                <input type="number" class="form-control" id="dailyRate" min="0" step="100" placeholder="e.g., 5000">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Opening Time</label>
+                <input type="time" class="form-control" id="openingTime" value="06:00">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Closing Time</label>
+                <input type="time" class="form-control" id="closingTime" value="22:00">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" id="facilityDescription" rows="3" placeholder="Describe the facility, equipment available, rules, etc."></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Features</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featureAirConditioned">
+                    <label class="form-check-label" for="featureAirConditioned">Air Conditioned</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featureWiFi">
+                    <label class="form-check-label" for="featureWiFi">Wi-Fi Available</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featureLocker">
+                    <label class="form-check-label" for="featureLocker">Locker Room</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featureParking">
+                    <label class="form-check-label" for="featureParking">Parking Available</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featureTraining">
+                    <label class="form-check-label" for="featureTraining">Training Available</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featureEquipment">
+                    <label class="form-check-label" for="featureEquipment">Equipment Included</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="facilityStatus">
+                <option value="available" selected>Available</option>
+                <option value="maintenance">Under Maintenance</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="addFacilityForm" class="btn btn-gold">Add Facility</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW BOOKING MODAL -->
+  <div class="modal fade" id="newBookingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">New Facility Booking</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="newBookingForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Select Facility *</label>
+                <select class="form-select" id="bookingFacility" required>
+                  <option value="">Select Facility</option>
+                  <!-- Facilities will be populated dynamically -->
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Select Member *</label>
+                <select class="form-select" id="bookingMember" required>
+                  <option value="">Select Member</option>
+                  <!-- Members will be populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Booking Date *</label>
+                <input type="date" class="form-control" id="bookingDate" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Booking Type *</label>
+                <select class="form-select" id="bookingType" required>
+                  <option value="hourly">Hourly Booking</option>
+                  <option value="daily">Daily Booking</option>
+                  <option value="weekly">Weekly Pass</option>
+                  <option value="monthly">Monthly Pass</option>
+                  <option value="event">Event Booking</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3" id="timeSelectionSection">
+              <label class="form-label">Select Time Slot *</label>
+              <div class="time-slot-grid" id="timeSlotsContainer">
+                <!-- Time slots will be populated dynamically -->
+              </div>
+            </div>
+
+            <div class="row mb-3" id="durationSelection" style="display: none;">
+              <div class="col-md-6">
+                <label class="form-label">Start Time *</label>
+                <input type="time" class="form-control" id="startTime">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">End Time *</label>
+                <input type="time" class="form-control" id="endTime">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Number of People</label>
+                <input type="number" class="form-control" id="bookingPeople" min="1" value="1">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Booking Purpose</label>
+                <select class="form-select" id="bookingPurpose">
+                  <option value="personal">Personal Use</option>
+                  <option value="training">Training Session</option>
+                  <option value="event">Special Event</option>
+                  <option value="competition">Competition</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Special Requirements</label>
+              <textarea class="form-control" id="bookingRequirements" rows="2" placeholder="Any special equipment or setup requirements"></textarea>
+            </div>
+
+            <div class="card bg-light mb-3">
+              <div class="card-body">
+                <h6 class="card-title">Booking Summary</h6>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-2"><strong>Facility:</strong> <span id="summaryFacility">-</span></div>
+                    <div class="mb-2"><strong>Date:</strong> <span id="summaryDate">-</span></div>
+                    <div class="mb-2"><strong>Time:</strong> <span id="summaryTime">-</span></div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-2"><strong>Duration:</strong> <span id="summaryDuration">-</span></div>
+                    <div class="mb-2"><strong>Rate:</strong> <span id="summaryRate">PKR 0</span></div>
+                    <div class="mb-2"><strong>Total:</strong> <span id="summaryTotal" class="fw-bold">PKR 0</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-outline-primary" id="checkAvailabilityBtn">Check Availability</button>
+          <button type="submit" form="newBookingForm" class="btn btn-gold">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PRICING RULE MODAL -->
+  <div class="modal fade" id="addPricingRuleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Pricing Rule</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addPricingRuleForm">
+            <div class="mb-3">
+              <label class="form-label">Select Facility *</label>
+              <select class="form-select" id="pricingFacility" required>
+                <option value="">Select Facility</option>
+                <!-- Facilities will be populated dynamically -->
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Pricing Type *</label>
+              <select class="form-select" id="pricingType" required>
+                <option value="hourly">Hourly Rate</option>
+                <option value="daily">Daily Rate</option>
+                <option value="weekly">Weekly Rate</option>
+                <option value="monthly">Monthly Rate</option>
+                <option value="event">Event Rate</option>
+                <option value="peak">Peak/Off-Peak</option>
+              </select>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Standard Rate (PKR) *</label>
+                <input type="number" class="form-control" id="standardRate" required min="0" step="100">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Member Discount (%)</label>
+                <input type="number" class="form-control" id="memberDiscount" min="0" max="100" value="10">
+              </div>
+            </div>
+            
+            <div class="row mb-3" id="peakPricingSection" style="display: none;">
+              <div class="col-md-6">
+                <label class="form-label">Peak Rate (PKR)</label>
+                <input type="number" class="form-control" id="peakRate" min="0" step="100">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Peak Hours</label>
+                <input type="text" class="form-control" id="peakHours" placeholder="e.g., 17:00-21:00">
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Weekend Rate (PKR)</label>
+                <input type="number" class="form-control" id="weekendRate" min="0" step="100">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Holiday Rate (PKR)</label>
+                <input type="number" class="form-control" id="holidayRate" min="0" step="100">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Effective From *</label>
+              <input type="date" class="form-control" id="effectiveFrom" required>
+            </div>
+            
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="isActivePricing" checked>
+                <label class="form-check-label" for="isActivePricing">
+                  Active Pricing Rule
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="addPricingRuleForm" class="btn btn-gold">Save Pricing Rule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE MAINTENANCE MODAL -->
+  <div class="modal fade" id="scheduleMaintenanceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Schedule Facility Maintenance</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="scheduleMaintenanceForm">
+            <div class="mb-3">
+              <label class="form-label">Select Facility *</label>
+              <select class="form-select" id="maintenanceFacility" required>
+                <option value="">Select Facility</option>
+                <!-- Facilities will be populated dynamically -->
+              </select>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Start Date *</label>
+                <input type="date" class="form-control" id="maintenanceStart" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">End Date *</label>
+                <input type="date" class="form-control" id="maintenanceEnd" required>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Maintenance Type *</label>
+                <select class="form-select" id="maintenanceType" required>
+                  <option value="routine">Routine Maintenance</option>
+                  <option value="repair">Repair Work</option>
+                  <option value="upgrade">Facility Upgrade</option>
+                  <option value="cleaning">Deep Cleaning</option>
+                  <option value="inspection">Safety Inspection</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Priority</label>
+                <select class="form-select" id="maintenancePriority">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high" selected>High</option>
+                  <option value="critical">Critical</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Estimated Cost (PKR)</label>
+              <input type="number" class="form-control" id="maintenanceCost" min="0" step="100">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Service Provider</label>
+              <input type="text" class="form-control" id="serviceProvider" placeholder="Company or individual name">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Description/Notes</label>
+              <textarea class="form-control" id="maintenanceNotes" rows="3" placeholder="Describe the maintenance work required"></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="notifyMembers" checked>
+                <label class="form-check-label" for="notifyMembers">
+                  Notify affected members
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="scheduleMaintenanceForm" class="btn btn-gold">Schedule Maintenance</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE BULK BOOKING MODAL -->
+  <div class="modal fade" id="createBulkBookingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Bulk Event Booking</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="createBulkBookingForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Event Name *</label>
+                <input type="text" class="form-control" id="eventName" required placeholder="e.g., Annual Tennis Tournament">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Organizer/Client *</label>
+                <input type="text" class="form-control" id="eventOrganizer" required placeholder="Organization or individual name">
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Event Date *</label>
+                <input type="date" class="form-control" id="eventDate" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Event Type</label>
+                <select class="form-select" id="eventType">
+                  <option value="tournament">Tournament</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="celebration">Celebration</option>
+                  <option value="meeting">Business Meeting</option>
+                  <option value="training">Training Camp</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Start Time *</label>
+                <input type="time" class="form-control" id="eventStartTime" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">End Time *</label>
+                <input type="time" class="form-control" id="eventEndTime" required>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Select Facilities *</label>
+              <div class="row" id="facilitiesSelection">
+                <!-- Facilities checkboxes will be populated here -->
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Expected Participants</label>
+                <input type="number" class="form-control" id="eventParticipants" min="1" value="50">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Special Rate (PKR)</label>
+                <input type="number" class="form-control" id="eventSpecialRate" min="0" step="100">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Additional Requirements</label>
+              <textarea class="form-control" id="eventRequirements" rows="3" placeholder="Catering, equipment, setup requirements, etc."></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Contact Person</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="contactName" placeholder="Name">
+                </div>
+                <div class="col-md-6">
+                  <input type="tel" class="form-control" id="contactPhone" placeholder="Phone">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="createBulkBookingForm" class="btn btn-gold">Create Event Booking</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+  <!-- Facilities Management JS -->
+  <script src="assets/js/facilities.js"></script>
+
+  <style>
+    .nav-link.active {
+      background-color: rgba(255, 215, 0, 0.1);
+      color: white;
+      font-weight: 900;
+      border-left: 3px solid #daa520;
+    }
+    
+    .btn-gold {
+      background-color: #daa520;
+      border-color: #daa520;
+      color: white;
+    }
+    
+    .btn-gold:hover {
+      background-color: #b8860b;
+      border-color: #b8860b;
+      color: white;
+    }
+    
+    .btn-outline-gold {
+      color: #daa520;
+      border-color: #daa520;
+    }
+    
+    .btn-outline-gold:hover {
+      background-color: #daa520;
+      color: white;
+    }
+    
+    /* FullCalendar customization */
+    .fc-toolbar-title {
+      font-size: 1.2rem !important;
+    }
+    
+    .fc-event {
+      cursor: pointer;
+    }
+    
+    .fc-daygrid-event {
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+    
+    .booking-type-badge {
+      font-size: 0.7em;
+      padding: 1px 4px;
+      border-radius: 3px;
+      margin-left: 4px;
+    }
+  </style>
+</body>
+
+</html>

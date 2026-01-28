@@ -1,0 +1,892 @@
+:root{
+  --sidebar-bg: #D9B73B;
+  --topbar-bg: #1A1A1A;
+  --body-bg: #F5F5F5;
+  --card-bg: #FFFFFF;
+  --gold: #D9B73B;
+  --text-primary: #111;
+  --text-secondary: #555;
+  --shadow: 0 6px 18px rgba(0,0,0,0.05);
+  --radius: 12px;
+  --font: 'Inter', 'Poppins', sans-serif;
+  --max-width: 1200px;
+}
+
+.login-body{
+  background: var(--body-bg);
+  font-family: var(--font);
+  height: 100vh;
+}
+
+.login-wrapper{
+  height: 100%;
+}
+
+.login-card{
+  width: 380px;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.logo-box{
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.logo-box img{
+  width: 150px;
+  height: 150px;
+}
+
+.btn-gold{
+  background: var(--gold);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 14px;
+  border: none;
+}
+
+.btn-gold:hover{
+  background: #c3a035;
+  color: #fff;
+}
+
+.form-control:focus{
+  border-color: var(--gold);
+  box-shadow: 0 0 0 0.15rem rgba(217,183,59,0.3);
+}
+
+/* Reset & Base */
+html, body{
+  height: 100vh;
+  overflow: hidden;
+  background: var(--body-bg);
+  font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color: var(--text-primary);
+}
+
+.app-root{
+  min-height: 100vh;
+}
+
+/* ======================
+   SIDEBAR
+====================== */
+.sidebar{
+  width: 250px;
+  background: var(--sidebar-bg);
+ height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+  padding-bottom:15vh ;
+}
+
+.topbar-header{
+  width: max-content;
+}
+
+.admin-logo-box img{
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.brand-title{
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Sidebar Navigation */
+.nav-link{
+  color: rgba(0,0,0,0.85);
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link i{
+  font-size: 18px;
+}
+
+.nav-link:hover{
+  background: rgba(0,0,0,0.06);
+  color: #000;
+  text-decoration: none;
+}
+.nav-link.active{
+  background-color: rgba(255, 215, 0, 0.1);
+      color: white;
+      font-weight: 900;
+      border-left: 3px solid #daa520;
+}
+/* ======================
+   MAIN AREA
+====================== */
+.main{
+  display: flex;
+  flex-direction: column;
+height: 90vh;
+  width: 100%;
+  overflow-y: scroll;
+  padding-bottom: 10vh;
+}
+
+/* ======================
+   TOPBAR
+====================== */
+.topbar{
+  background: var(--topbar-bg);
+  color: #fff;
+  padding: 8px 18px;
+  min-height: 56px;
+}
+
+.topbar .btn-light{
+  background: #fff;
+  border: none;
+}
+
+.role-switcher select{
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+/* ======================
+   CONTENT AREA
+====================== */
+.content{
+  max-width: var(--max-width);
+  margin: 18px;
+  width: calc(100% - 36px);
+}
+
+/* ======================
+   CARDS & STATS
+====================== */
+.card{
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: none;
+}
+
+.stat-card .card-body{
+  padding: 18px;
+}
+
+.stat-title{
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.stat-value{
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-outline-gold{
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(0,0,0,0.15);
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.btn-outline-gold:hover{
+  background: rgba(217,183,59,0.12);
+}
+
+/* ======================
+   ALERT LIST
+====================== */
+.alerts-list li{
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.08);
+  font-size: 14px;
+}
+
+/* Responsive Utilities */
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hide/Show based on screen size */
+.d-mobile-inline { display: none !important; }
+.d-desktop-inline { display: inline !important; }
+
+@media (max-width: 768px) {
+  .d-mobile-inline { display: inline !important; }
+  .d-desktop-inline { display: none !important; }
+}
+
+/* Responsive spacing utilities */
+@media (max-width: 768px) {
+  .px-mobile-2 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+  .py-mobile-3 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+}
+
+/* Accessibility improvements */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .sidebar {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-gold {
+    border: 2px solid #000;
+  }
+  
+  .nav-link.active {
+    border-left-width: 4px;
+  }
+}
+
+
+/* ===========================================
+   CASH FLOW MODULE STYLES
+=========================================== */
+
+/* Cash Flow Specific Styles */
+.cashflow-card {
+    border-left: 4px solid var(--gold);
+    transition: transform 0.2s;
+}
+
+.cashflow-card:hover {
+    transform: translateY(-2px);
+}
+
+.opening-balance {
+    border-color: #198754;
+}
+
+.receipts {
+    border-color: #28a745;
+}
+
+.payments {
+    border-color: #dc3545;
+}
+
+.closing-balance {
+    border-color: #007bff;
+}
+
+.projected {
+    border-color: #ffc107;
+}
+
+.variance-positive {
+    color: #198754;
+    font-weight: 600;
+}
+
+.variance-negative {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.alert-low-balance {
+    animation: pulse 2s infinite;
+    border-left: 4px solid #dc3545;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.reconciliation-status {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.status-reconciled {
+    background-color: #28a745;
+}
+
+.status-pending {
+    background-color: #ffc107;
+}
+
+.status-discrepancy {
+    background-color: #dc3545;
+}
+
+.trend-up {
+    color: #28a745;
+}
+
+.trend-down {
+    color: #dc3545;
+}
+
+.cashflow-summary-card {
+    transition: transform 0.2s;
+}
+
+.cashflow-summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* Transaction status badges */
+.transaction-status {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Cash flow table specific styles */
+.cashflow-report-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cashflow-report-table tbody tr:hover {
+    background-color: rgba(217, 183, 59, 0.05);
+}
+
+/* Category colors */
+.category-membership {
+    border-left: 3px solid #198754;
+}
+
+.category-facility {
+    border-left: 3px solid #0dcaf0;
+}
+
+.category-residential {
+    border-left: 3px solid #6f42c1;
+}
+
+.category-utility {
+    border-left: 3px solid #fd7e14;
+}
+
+.category-salary {
+    border-left: 3px solid #dc3545;
+}
+
+.category-maintenance {
+    border-left: 3px solid #6c757d;
+}
+
+/* Payment method icons */
+.payment-method-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+
+/* Icon boxes for dashboard widgets */
+.icon-box {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Progress indicators */
+.cashflow-progress {
+    height: 6px;
+    border-radius: 3px;
+    background-color: #e9ecef;
+    overflow: hidden;
+}
+
+.cashflow-progress-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+
+/* Variance indicators */
+.variance-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.variance-indicator.positive {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.variance-indicator.negative {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.variance-indicator.neutral {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* Loading overlay */
+.cashflow-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border-radius: var(--radius);
+}
+
+/* Empty state */
+.cashflow-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.cashflow-empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Filter section */
+.cashflow-filters {
+    background: #f8f9fa;
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Print styles */
+@media print {
+    .cashflow-no-print {
+        display: none !important;
+    }
+    
+    .cashflow-report-table {
+        font-size: 11pt !important;
+        break-inside: avoid;
+    }
+    
+    .cashflow-card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+    
+    .badge {
+        border: 1px solid #000 !important;
+        background-color: white !important;
+        color: #000 !important;
+    }
+    
+    .cashflow-summary-card {
+        page-break-inside: avoid;
+    }
+    
+    .chart-container {
+        display: none !important;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-contrast: high) {
+    .cashflow-card {
+        border-width: 3px;
+    }
+    
+    .variance-indicator {
+        border: 1px solid currentColor;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .cashflow-card,
+    .cashflow-summary-card,
+    .alert-low-balance {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* ===========================================
+   ADMIN SETTINGS STYLES
+=========================================== */
+
+/* Settings tabs styling */
+#settingsTab .nav-link {
+  padding: 10px 16px;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  margin-right: 4px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+#settingsTab .nav-link:hover {
+  background-color: rgba(217, 183, 59, 0.1);
+  border-color: rgba(217, 183, 59, 0.3);
+}
+
+#settingsTab .nav-link.active {
+  background-color: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+
+#settingsTab .nav-link i {
+  margin-right: 6px;
+}
+
+/* Settings forms */
+.settings-form .form-label {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.settings-form .form-control,
+.settings-form .form-select {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.settings-form .form-control:focus,
+.settings-form .form-select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 0.15rem rgba(217, 183, 59, 0.3);
+}
+
+/* Card improvements for settings */
+.settings-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+.settings-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.settings-card .card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+/* Switch styling */
+.form-check.form-switch .form-check-input {
+  width: 3em;
+  height: 1.5em;
+  cursor: pointer;
+}
+
+.form-check.form-switch .form-check-input:checked {
+  background-color: var(--gold);
+  border-color: var(--gold);
+}
+
+.form-check.form-switch .form-check-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 0.15rem rgba(217, 183, 59, 0.3);
+}
+
+/* Avatar styling */
+.avatar-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.avatar-text {
+  font-size: 0.875rem;
+}
+
+/* Badge improvements */
+.badge {
+  padding: 4px 8px;
+  font-weight: 500;
+}
+
+/* Danger zone styling */
+.danger-zone .alert {
+  border-left: 4px solid #dc3545;
+}
+
+.danger-zone .btn-danger {
+  transition: all 0.2s;
+}
+
+.danger-zone .btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* API key display */
+.api-key-display {
+  font-family: 'Courier New', monospace;
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Backup status */
+.backup-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.backup-status.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.backup-status.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.backup-status.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Permission checkboxes */
+.permission-group {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.permission-group h6 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.permission-group .form-check {
+  margin-bottom: 6px;
+}
+
+.permission-group .form-check:last-child {
+  margin-bottom: 0;
+}
+
+.permission-group .form-check-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Import/Export styling */
+.import-export-card {
+  border-left: 4px solid var(--gold);
+}
+
+.import-export-card .card-body {
+  text-align: center;
+}
+
+.import-export-card i {
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+/* Modal adjustments for settings */
+#addRoleModal .modal-body,
+#backupModal .modal-body,
+#importModal .modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* System info table */
+.system-info-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.system-info-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Loading states */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-overlay .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: var(--gold);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #settingsTab .nav-link {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  
+  #settingsTab .nav-link i {
+    margin-right: 4px;
+  }
+  
+  .settings-form .form-label {
+    font-size: 0.9rem;
+  }
+  
+  .settings-card {
+    margin-bottom: 1rem;
+  }
+  
+  .avatar-circle {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  .avatar-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print,
+  .btn,
+  .modal,
+  .nav-tabs,
+  .tab-content > .tab-pane:not(.active) {
+    display: none !important;
+  }
+  
+  .tab-content > .tab-pane.active {
+    display: block !important;
+  }
+  
+  .card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  
+  .table {
+    font-size: 10pt !important;
+  }
+  
+  .badge {
+    border: 1px solid #000 !important;
+    background-color: white !important;
+    color: #000 !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .settings-card {
+    border: 2px solid #000;
+  }
+  
+  #settingsTab .nav-link {
+    border: 2px solid transparent;
+  }
+  
+  #settingsTab .nav-link.active {
+    border: 2px solid #000;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .settings-card,
+  #settingsTab .nav-link,
+  .btn {
+    transition: none;
+  }
+}

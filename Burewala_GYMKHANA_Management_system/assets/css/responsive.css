@@ -1,0 +1,2982 @@
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .sidebar {
+    height: -webkit-fill-available;
+  }
+  
+  .login-body {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+/* Edge/IE fallbacks */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .sidebar {
+    width: 250px;
+    min-width: 250px;
+  }
+  
+  .app-root {
+    display: block;
+  }
+}
+/* Login page responsiveness */
+@media (max-width: 480px) {
+  .login-card {
+    width: 90%;
+    max-width: 350px;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .logo-box {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .logo-box img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .login-card {
+    width: 400px;
+  }
+}
+/* ===========================================
+   1. TOPBAR & NAVIGATION RESPONSIVENESS
+=========================================== */
+
+/* Small Tablet (481px–768px) */
+@media (min-width: 481px) {
+  .topbar {
+    padding: 8px 16px;
+    flex-wrap: nowrap;
+  }
+  
+  .brand-title {
+    font-size: 15px;
+    white-space: nowrap;
+  }
+}
+
+/* Large Tablet/Laptop (769px–1024px) */
+@media (min-width: 769px) {
+  .topbar {
+    padding: 8px 24px;
+  }
+  
+  .admin-logo-box img {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Desktop (1025px–1440px) */
+@media (min-width: 1025px) {
+  .topbar {
+    min-height: 60px;
+  }
+}
+
+/* ===========================================
+   2. MAIN LAYOUT & SIDEBAR RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Hide sidebar by default, show with toggle */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+/* Below topbar */
+  height: 100vh;
+    width: 250px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    padding-bottom: 2vh;
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
+  .main {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  /* Add mobile menu toggle button */
+  .mobile-menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+  
+  /* Remove existing desktop-only topbar actions on mobile */
+  .role-switcher {
+    display: none;
+  }
+}
+
+/* Small Tablet (481px–768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+  }
+}
+
+/* Large Tablet (769px–1024px) - Compact sidebar */
+@media (min-width: 769px) and (max-width: 1024px) {
+ 
+}
+
+/* Desktop (1025px+) - Restore full sidebar */
+@media (min-width: 1025px) {
+  .sidebar {
+    width: 250px;
+  }
+  
+  .sidebar .nav-link span {
+    display: inline;
+  }
+  
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
+
+/* ===========================================
+   3. CONTENT AREA & CARDS RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Stack all cards */
+@media (max-width: 480px) {
+  .content {
+    margin: 10px;
+    padding: 12px !important;
+    width: calc(100% - 20px);
+  }
+  
+  .card {
+    margin-bottom: 15px;
+  }
+  
+  .row.g-3 {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  
+  .row.g-3 > [class*="col-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+/* Tablet: Adjust card spacing */
+@media (min-width: 481px) and (max-width: 768px) {
+  .content {
+    margin: 15px;
+    padding: 16px !important;
+    width: calc(100% - 30px);
+  }
+  
+  .stat-card .card-body {
+    padding: 15px;
+  }
+}
+
+/* Desktop: Restore original spacing */
+@media (min-width: 1025px) {
+  .content {
+    margin: 18px;
+    padding: 24px !important;
+    max-width: 1200px;
+  }
+}
+
+/* ===========================================
+   4. STATS CARDS RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Stack stats vertically */
+@media (max-width: 768px) {
+  .stat-card {
+    margin-bottom: 15px;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablet: 2 columns for stats */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .row.g-3 .col-md-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  .row.g-3 .col-md-4:last-child {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 15px;
+  }
+}
+
+/* ===========================================
+   5. TABLES RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Make tables scroll horizontally */
+/* Enhanced table responsiveness */
+@media (max-width: 480px) {
+  /* Reduce table font size further on very small screens */
+  .table {
+    font-size: 0.8rem;
+    min-width: 550px;
+  }
+  
+  /* Hide less important columns on mobile */
+  .table th:nth-child(7), /* Last Login column */
+  .table td:nth-child(7) {
+    display: none;
+  }
+  
+  /* Make action buttons more touch-friendly */
+  .btn-group-sm .btn {
+    padding: 8px 12px;
+    margin: 2px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  /* Stack badges vertically in table cells if needed */
+  .badge {
+    display: inline-block;
+    margin: 2px 0;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 15px;
+  }
+  
+  .table {
+    min-width: 600px; /* Force horizontal scroll */
+    font-size: 0.875rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+  
+  /* Users table specific adjustments */
+  #usersTableBody .avatar-circle {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+  
+  .avatar-text {
+    font-size: 0.75rem;
+  }
+  
+  .btn-group-sm .btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Bulk actions row */
+  .card-body.py-2 {
+    padding: 10px !important;
+  }
+}
+
+/* Tablet: Adjust table sizing */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .table {
+    font-size: 0.9rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px 12px;
+  }
+}
+
+/* ===========================================
+   6. FORMS & MODALS RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Full-width form controls */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .modal-content {
+    border-radius: 8px;
+  }
+  
+  .form-control, .form-select {
+    font-size: 16px; /* Prevents iOS zoom */
+    padding: 12px;
+  }
+  
+  .input-group .btn {
+    padding: 10px 15px;
+  }
+  
+  /* Search and filters stack vertically */
+  .row.g-3 > .col-md-6,
+  .row.g-3 > .col-md-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Tablet: Adjust modal sizing */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .modal-dialog {
+    max-width: 600px;
+    margin: 30px auto;
+  }
+}
+
+/* ===========================================
+   7. CHARTS RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Smaller charts */
+@media (max-width: 768px) {
+  #barChart,
+  #lineChart {
+    height: 200px !important;
+  }
+  
+  .card-body h6 {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+}
+
+/* Tablet: Medium charts */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #barChart,
+  #lineChart {
+    height: 180px !important;
+  }
+}
+
+/* Desktop: Restore chart sizes */
+@media (min-width: 1025px) {
+  #barChart,
+  #lineChart {
+    height: 140px !important;
+  }
+}
+
+/* ===========================================
+   8. BUTTONS & ACTIONS RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Stack action buttons */
+@media (max-width: 768px) {
+  .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+  
+  .d-flex.gap-2 .btn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  /* Users page header actions */
+  .d-flex.justify-content-between.align-items-center.mb-4 {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 15px;
+  }
+  
+  .d-flex.justify-content-between.align-items-center.mb-4 h2 {
+    margin-bottom: 0;
+  }
+  
+  .d-flex.justify-content-between.align-items-center.mb-4 .btn {
+    width: 100%;
+  }
+}
+
+/* Tablet: Inline buttons with wrapping */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .d-flex.gap-2 {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+  
+  .d-flex.gap-2 .btn {
+    min-width: 150px;
+  }
+}
+
+/* ===========================================
+   9. PAGINATION RESPONSIVENESS
+=========================================== */
+
+@media (max-width: 480px) {
+  .pagination .page-item .page-link {
+    padding: 6px 10px;
+    font-size: 0.875rem;
+  }
+  
+  .pagination .page-item:not(.active):not(:first-child):not(:last-child) {
+    display: none;
+  }
+  
+  .pagination .page-item:first-child .page-link::before {
+    content: "← ";
+  }
+  
+  .pagination .page-item:last-child .page-link::after {
+    content: " →";
+  }
+}
+
+/* ===========================================
+   10. UTILITIES & HELPERS
+=========================================== */
+
+/* Hide/show utilities for different screens */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block !important;
+  }
+  
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+/* Fluid typography */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h6.card-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Touch-friendly tap targets */
+@media (max-width: 768px) {
+  .nav-link,
+  .btn,
+  .form-check-input {
+    min-height: 44px; /* Apple HIG recommendation */
+  }
+  
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .table .form-check-input {
+    min-height: auto;
+  }
+}
+/* ===========================================
+   REPORTS PAGE RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Adjust report cards */
+@media (max-width: 480px) {
+    .report-stats .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .chart-container {
+        height: 200px !important;
+    }
+    
+    #detailedReportTable {
+        font-size: 0.8rem;
+    }
+    
+    #detailedReportTable th,
+    #detailedReportTable td {
+        padding: 6px 8px;
+    }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .report-stats .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .chart-container {
+        height: 220px !important;
+    }
+}
+
+/* Desktop: Full layout */
+@media (min-width: 769px) {
+    .chart-container {
+        height: 250px !important;
+    }
+}
+
+/* Date range picker adjustments */
+@media (max-width: 768px) {
+    .daterangepicker {
+        width: 100% !important;
+        max-width: 300px;
+    }
+    
+    .daterangepicker .calendar {
+        float: none !important;
+        width: 100% !important;
+    }
+    
+    .daterangepicker .ranges {
+        display: none !important;
+    }
+}
+
+/* Print preview modal adjustments */
+@media (max-width: 768px) {
+    #printPreviewModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    #printPreviewContent .container {
+        padding: 15px !important;
+    }
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--gold);
+}
+/* ===========================================
+   ACCOUNTING PAGE RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Adjust accounting cards */
+@media (max-width: 480px) {
+    .accounting-view .card-body {
+        padding: 12px !important;
+    }
+    
+    #generalLedgerTable,
+    #trialBalanceTable,
+    #chartOfAccountsTable {
+        font-size: 0.8rem;
+        min-width: 600px;
+    }
+    
+    .accounting-navigation .btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+    
+    .chart-container {
+        height: 150px !important;
+    }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .accounting-view .card-body {
+        padding: 15px !important;
+    }
+    
+    .accounting-navigation .btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+    
+    .chart-container {
+        height: 180px !important;
+    }
+}
+
+/* Desktop: Full layout */
+@media (min-width: 769px) {
+    .accounting-navigation .btn {
+        padding: 10px 16px;
+    }
+    
+    .chart-container {
+        height: 200px !important;
+    }
+}
+
+/* Journal entry modal responsiveness */
+@media (max-width: 768px) {
+    #journalItemsTable {
+        font-size: 0.8rem;
+        min-width: 500px;
+    }
+    
+    #journalItemsTable input,
+    #journalItemsTable select {
+        font-size: 0.8rem;
+        padding: 4px 6px;
+    }
+    
+    .remove-item {
+        padding: 2px 6px !important;
+    }
+}
+
+/* Bank reconciliation table responsiveness */
+@media (max-width: 768px) {
+    .bank-reconciliation .table {
+        font-size: 0.8rem;
+        min-width: 500px;
+    }
+    
+    .bank-reconciliation .card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Print styles for accounting reports */
+@media print {
+    .accounting-view {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    #generalLedgerView table,
+    #trialBalanceView table,
+    #balanceSheetView .table {
+        font-size: 10pt !important;
+    }
+    
+    .no-print,
+    .btn,
+    .modal,
+    .collapse,
+    .accounting-navigation,
+    .quick-actions {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    .table th {
+        background-color: #f8f9fa !important;
+        color: #000 !important;
+    }
+    
+    .badge {
+        border: 1px solid #000 !important;
+        background-color: white !important;
+        color: #000 !important;
+    }
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--gold);
+}
+
+/* Account type colors for better visual distinction */
+.badge-asset {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
+.badge-liability {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.badge-equity {
+    background-color: #0dcaf0 !important;
+    color: white !important;
+}
+
+.badge-income {
+    background-color: #ffc107 !important;
+    color: black !important;
+}
+
+.badge-expense {
+    background-color: #6f42c1 !important;
+    color: white !important;
+}
+/* ===========================================
+   FACILITIES PAGE RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Adjust facility cards */
+@media (max-width: 480px) {
+    .facility-card .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .facility-avatar {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 20px !important;
+    }
+    
+    .capacity-badge,
+    .pricing-badge {
+        font-size: 0.7em !important;
+        padding: 2px 6px !important;
+    }
+    
+    .time-slot-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)) !important;
+    }
+    
+    .booking-slot {
+        padding: 6px 8px !important;
+        font-size: 0.8em;
+    }
+    
+    .calendar-container {
+        height: 400px !important;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 1rem !important;
+    }
+    
+    .fc-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .fc-toolbar-chunk {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .facility-card .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .time-slot-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+    }
+    
+    .calendar-container {
+        height: 500px !important;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Desktop: Full layout */
+@media (min-width: 769px) {
+    .calendar-container {
+        height: 600px !important;
+    }
+}
+
+/* FullCalendar mobile adjustments */
+@media (max-width: 768px) {
+    .fc .fc-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .fc .fc-toolbar-title {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+    
+    .fc .fc-button {
+        padding: 0.3em 0.6em;
+        font-size: 0.9em;
+    }
+    
+    .fc-daygrid-event {
+        font-size: 0.7em;
+        padding: 1px 2px;
+    }
+    
+    .fc-col-header-cell {
+        font-size: 0.8em;
+        padding: 4px 2px;
+    }
+}
+
+/* Modal responsiveness */
+@media (max-width: 768px) {
+    #addFacilityModal .modal-dialog,
+    #newBookingModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .modal-body .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    .modal-body .col-md-6 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+/* Print styles for reports */
+@media print {
+    .facilities-view {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    #reportsView .card,
+    #reportsView .table {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    .no-print,
+    .btn,
+    .modal,
+    .collapse,
+    .facilities-navigation {
+        display: none !important;
+    }
+    
+    .table th {
+        background-color: #f8f9fa !important;
+        color: #000 !important;
+    }
+    
+    .chart-container {
+        height: 200px !important;
+    }
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--gold);
+}
+
+/* Facility status colors for print */
+@media print {
+    .status-available {
+        background-color: #198754 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .status-booked {
+        background-color: #dc3545 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .status-maintenance {
+        background-color: #ffc107 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+/* ===========================================
+   RESIDENTIAL SECTION RESPONSIVENESS
+=========================================== */
+
+/* ===========================================
+   1. RESIDENTIAL CALENDAR RESPONSIVENESS
+=========================================== */
+
+/* Base calendar container styles */
+.calendar-container {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+/* FullCalendar container adjustments */
+.fc {
+    --fc-border-color: rgba(0, 0, 0, 0.08);
+    --fc-button-bg-color: #f8f9fa;
+    --fc-button-border-color: #dee2e6;
+    --fc-button-hover-bg-color: #e9ecef;
+    --fc-button-hover-border-color: #dee2e6;
+    --fc-button-active-bg-color: var(--gold);
+    --fc-button-active-border-color: var(--gold);
+    --fc-page-bg-color: #fff;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1rem !important;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.fc-toolbar-chunk {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.fc-button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 38px;
+    font-weight: 500;
+}
+
+.fc-button-primary:not(:disabled).fc-button-active {
+    background-color: var(--gold) !important;
+    border-color: var(--gold) !important;
+}
+
+/* Calendar event styles */
+.fc-event {
+    cursor: pointer;
+    border-radius: 4px;
+    border: none !important;
+    margin: 1px 2px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fc-event:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.fc-event-main {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px 4px;
+}
+
+.fc-event-title {
+    font-weight: 500;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    
+    -webkit-box-orient: vertical;
+}
+
+.fc-daygrid-dot-event {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.fc-daygrid-event-dot {
+    margin: 0 4px 0 0;
+    border-width: 5px;
+}
+
+/* Mobile: Stack calendar controls and optimize layout */
+@media (max-width: 480px) {
+    .mobileview{
+        flex-direction: column;
+        margin: 3vh 0;
+    }
+    .calendar-container {
+        height: 450px !important;
+        padding: 0.5rem;
+        margin: 0 -10px;
+        width: calc(100% + 20px);
+        border-radius: 0;
+    }
+    
+    .fc {
+        font-size: 12px;
+    }
+    
+    .fc .fc-toolbar {
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 0.5rem 0;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 0.95rem !important;
+        text-align: center;
+        order: 1;
+        width: 100%;
+        margin: 0 0 5px 0;
+        padding: 0 8px;
+    }
+    
+    .fc-toolbar-chunk:nth-child(1) {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .fc-toolbar-chunk:nth-child(2) {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .fc-button-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+        width: 100%;
+    }
+    
+    .fc-button {
+        padding: 0.3rem 0.5rem !important;
+        font-size: 0.75rem !important;
+        height: auto !important;
+        min-height: 36px;
+        flex: 1;
+        min-width: 60px;
+        max-width: 80px;
+    }
+    
+    .fc .fc-today-button {
+        width: 100%;
+        max-width: 120px;
+        margin-top: 5px;
+        order: 4;
+    }
+    
+    .fc-col-header-cell {
+        font-size: 0.65rem;
+        padding: 4px 1px !important;
+        height: 32px;
+    }
+    
+    .fc-col-header-cell-cushion {
+        padding: 2px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        text-align: center;
+    }
+    
+    .fc-daygrid-day-number {
+        font-size: 0.7rem;
+        padding: 2px 4px !important;
+        font-weight: 600;
+    }
+    
+    .fc-daygrid-day-frame {
+        min-height: 50px !important;
+        padding: 2px;
+    }
+    
+    .fc-daygrid-day-top {
+        justify-content: center;
+    }
+    
+    .fc-event {
+        font-size: 0.6rem !important;
+        padding: 1px 2px !important;
+        margin: 0.5px;
+        border-left-width: 3px !important;
+        border-left-style: solid !important;
+        border-right: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    .fc-event-title {
+        font-size: 0.6rem !important;
+        font-weight: 600;
+        padding-left: 2px;
+    }
+    
+    .fc-daygrid-event-dot {
+        display: none;
+    }
+    
+    .fc-daygrid-more-link {
+        font-size: 0.65rem;
+        padding: 1px 3px;
+        margin-top: 2px;
+    }
+    
+    /* Hide less important elements on mobile */
+    .fc-daygrid-day-events {
+        min-height: 16px !important;
+    }
+    
+    .fc-scrollgrid {
+        border: none;
+    }
+    
+    .fc-scrollgrid-section table {
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* TimeGrid views for mobile */
+    .fc-timegrid-slot {
+        height: 35px !important;
+        min-height: 35px !important;
+    }
+    
+    .fc-timegrid-slot-label {
+        font-size: 0.7rem;
+        padding: 2px 4px !important;
+    }
+    
+    .fc-timegrid-axis {
+        font-size: 0.7rem;
+    }
+    
+    .fc-timegrid-event {
+        font-size: 0.7rem;
+        padding: 1px 3px;
+    }
+    
+    /* Remove shadows and simplify on mobile */
+    .fc-theme-standard td,
+    .fc-theme-standard th {
+        border-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .fc-daygrid-day {
+        border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+}
+
+/* Tablet: Adjust calendar layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .calendar-container {
+        height: 500px !important;
+        padding: 0.75rem;
+    }
+    
+    .fc {
+        font-size: 13px;
+    }
+    
+    .fc .fc-toolbar {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0.5rem 0;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 1.1rem !important;
+        order: 1;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    
+    .fc-toolbar-chunk:nth-child(1) {
+        order: 2;
+        flex: 1;
+        justify-content: flex-start;
+    }
+    
+    .fc-toolbar-chunk:nth-child(2) {
+        order: 3;
+        flex: 1;
+        justify-content: flex-end;
+    }
+    
+    .fc-button {
+        padding: 0.4rem 0.7rem !important;
+        font-size: 0.8rem !important;
+        min-height: 40px;
+    }
+    
+    .fc-col-header-cell {
+        font-size: 0.75rem;
+        padding: 6px 2px !important;
+        height: 36px;
+    }
+    
+    .fc-daygrid-day-number {
+        font-size: 0.8rem;
+        padding: 3px 5px !important;
+    }
+    
+    .fc-daygrid-day-frame {
+        min-height: 65px !important;
+        padding: 3px;
+    }
+    
+    .fc-event {
+        font-size: 0.75rem !important;
+        padding: 2px 4px !important;
+        margin: 1px 2px;
+    }
+    
+    .fc-event-title {
+        font-size: 0.75rem !important;
+    }
+    
+    /* TimeGrid views for tablet */
+    .fc-timegrid-slot {
+        height: 40px !important;
+    }
+    
+    .fc-timegrid-slot-label {
+        font-size: 0.8rem;
+    }
+    
+    .fc-timegrid-axis {
+        font-size: 0.8rem;
+    }
+    
+    /* Limit event rows */
+    .fc-daygrid-more-link {
+        font-size: 0.75rem;
+    }
+}
+
+/* Small desktop: Adjust layout */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .calendar-container {
+        height: 550px !important;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 1.2rem !important;
+    }
+    
+    .fc-button {
+        padding: 0.5rem 0.8rem !important;
+    }
+    
+    .fc-daygrid-day-frame {
+        min-height: 85px !important;
+    }
+    
+    .fc-event {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Adjust calendar header for medium screens */
+    .fc .fc-toolbar {
+        gap: 1rem;
+    }
+}
+
+/* Large desktop: Full layout */
+@media (min-width: 1025px) {
+    .calendar-container {
+        height: 600px !important;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 1.3rem !important;
+    }
+    
+    .fc-daygrid-day-frame {
+        min-height: 100px !important;
+    }
+    
+    .fc-event {
+        font-size: 0.85rem !important;
+        padding: 3px 6px !important;
+    }
+}
+
+/* ===========================================
+   2. TOUCH-FRIENDLY CALENDAR INTERACTIONS
+=========================================== */
+
+@media (max-width: 768px) {
+    .fc-daygrid-day,
+    .fc-timegrid-slot {
+        min-height: 44px !important;
+        cursor: pointer;
+    }
+    
+    .fc-button {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+        cursor: pointer;
+    }
+    
+    .fc-event {
+        min-height: 24px;
+        cursor: pointer;
+    }
+    
+    /* Improve event tap targets */
+    .fc-event:active {
+        transform: scale(0.98);
+        transition: transform 0.1s;
+        opacity: 0.9;
+    }
+    
+    /* Add visual feedback for touch */
+    .fc-button:active {
+        transform: scale(0.95);
+    }
+    
+    .fc-daygrid-day:active {
+        background-color: rgba(217, 183, 59, 0.1);
+    }
+    
+    /* Prevent text selection during touch */
+    .fc * {
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+    
+    .fc-event-title {
+        user-select: none;
+    }
+}
+
+/* ===========================================
+   3. LANDSCAPE MODE ADJUSTMENTS
+=========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .calendar-container {
+        height: 300px !important;
+    }
+    
+    .fc .fc-toolbar {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 0.9rem !important;
+        width: auto;
+        order: 0;
+        margin-bottom: 0;
+    }
+    
+    .fc-toolbar-chunk:nth-child(1) {
+        order: 1;
+        flex: none;
+    }
+    
+    .fc-toolbar-chunk:nth-child(2) {
+        order: 2;
+        flex: none;
+    }
+    
+    .fc-daygrid-day-frame {
+        min-height: 35px !important;
+    }
+    
+    .fc-col-header-cell {
+        height: 28px !important;
+    }
+    
+    .fc-event {
+        font-size: 0.6rem !important;
+        padding: 0 2px !important;
+    }
+    
+    .fc-event-title {
+       
+        line-height: 1;
+    }
+}
+
+/* ===========================================
+   4. RESIDENTIAL ROOMS & BOOKING CARDS
+=========================================== */
+
+/* Mobile: Adjust residential cards */
+@media (max-width: 480px) {
+    .residential-view .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .room-avatar {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 16px !important;
+    }
+    
+    .room-card .card-body {
+        padding: 0.75rem !important;
+    }
+    
+    .room-type-badge {
+        font-size: 0.65rem !important;
+        padding: 0.2rem 0.4rem !important;
+    }
+    
+    .price-tag {
+        font-size: 0.85rem;
+    }
+    
+    .booking-timeline {
+        padding-left: 0.75rem;
+    }
+    
+    .booking-timeline-item {
+        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 6px;
+    }
+    
+    .booking-timeline-item::before {
+        left: -0.95rem;
+        top: 0.75rem;
+        width: 8px;
+        height: 8px;
+    }
+    
+    .occupancy-chart {
+        height: 200px !important;
+    }
+    
+    /* Housekeeping table adjustments */
+    #housekeepingTable td,
+    #cancellationsTable td {
+        padding: 6px 4px;
+        font-size: 0.75rem;
+    }
+    
+    .housekeeping-status {
+        font-size: 0.75rem;
+    }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .residential-view .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .room-avatar {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 20px !important;
+    }
+    
+    .occupancy-chart {
+        height: 220px !important;
+    }
+    
+    .booking-timeline-item {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Stats cards adjustments */
+    .stat-card .card-body {
+        padding: 1rem !important;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+}
+
+/* ===========================================
+   5. RESIDENTIAL MODALS RESPONSIVENESS
+=========================================== */
+
+@media (max-width: 768px) {
+    #newBookingModal .modal-dialog,
+    #checkinModal .modal-dialog,
+    #checkoutModal .modal-dialog,
+    #housekeepingModal .modal-dialog,
+    #occupancyReportModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    #newBookingModal .modal-dialog.modal-lg {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .modal-body .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    .modal-body .col-md-6,
+    .modal-body .col-md-4 {
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-bottom: 1rem;
+    }
+    
+    /* Form adjustments for mobile */
+    .modal-body .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .modal-body .form-control,
+    .modal-body .form-select {
+        font-size: 16px; /* Prevents iOS zoom */
+        padding: 10px;
+        min-height: 44px;
+    }
+    
+    /* Modal footer buttons */
+    .modal-footer .btn {
+        min-height: 44px;
+        flex: 1;
+    }
+    
+    /* Date range picker adjustments */
+    .daterangepicker {
+        width: 100% !important;
+        max-width: 300px;
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+    
+    .daterangepicker .calendar {
+        float: none !important;
+        width: 100% !important;
+    }
+    
+    .daterangepicker .ranges {
+        display: none !important;
+    }
+}
+
+/* ===========================================
+   6. PRINT STYLES FOR RESIDENTIAL REPORTS
+=========================================== */
+
+@media print {
+    .residential-view {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    .calendar-container {
+        height: auto !important;
+        page-break-inside: avoid;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    #occupancyReportModal .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    /* Hide interactive elements */
+    .no-print,
+    .btn,
+    .modal,
+    .collapse,
+    .quick-actions,
+    .fc-toolbar,
+    .fc-event:after {
+        display: none !important;
+    }
+    
+    /* Improve table readability */
+    .table th {
+        background-color: #f8f9fa !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        border: 1px solid #000 !important;
+    }
+    
+    .table td {
+        border: 1px solid #ddd !important;
+    }
+    
+    /* Room status badges */
+    .room-status-badges .badge,
+    .status-available,
+    .status-occupied,
+    .status-maintenance,
+    .status-cleaning {
+        border: 1px solid #000 !important;
+        background-color: white !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Calendar print styles */
+    .fc-view {
+        border: 1px solid #000 !important;
+    }
+    
+    .fc-event {
+        background-color: #fff !important;
+        color: #000 !important;
+        border: 1px solid #000 !important;
+        border-left-width: 3px !important;
+    }
+    
+    /* Booking timeline print styles */
+    .booking-timeline {
+        border-left: 2px solid #000 !important;
+    }
+    
+    .booking-timeline-item::before {
+        background: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Charts print styles */
+    .occupancy-chart canvas {
+        filter: contrast(1.2);
+        max-height: 250px;
+    }
+}
+
+/* ===========================================
+   7. ACCESSIBILITY & HIGH CONTRAST MODE
+=========================================== */
+
+@media (prefers-contrast: high) {
+    .fc-event {
+        border: 2px solid #000 !important;
+    }
+    
+    .fc-button {
+        border: 2px solid #000 !important;
+    }
+    
+    .calendar-container {
+        border: 2px solid #000;
+    }
+    
+    .room-card {
+        border: 2px solid #000;
+    }
+    
+    .booking-timeline {
+        border-left-width: 3px;
+        border-left-color: #000;
+    }
+}
+
+/* ===========================================
+   8. REDUCED MOTION SUPPORT
+=========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .fc-button,
+    .fc-event,
+    .room-card {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .calendar-container {
+        transition: none;
+    }
+    
+    .booking-timeline-item::before {
+        animation: none;
+    }
+}
+@media (max-width: 768px) {
+    .residential-view .row.g-3 .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .stat-card {
+        margin-bottom: 15px;
+        height: 100%;
+    }
+    
+    .stat-value {
+        font-size: 1.4rem;
+    }
+    
+    .stat-title {
+        font-size: 0.8rem;
+    }
+    
+    .text-muted.small {
+        font-size: 0.7rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .residential-view .row.g-3 .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .residential-view .row.g-3 .col-md-3:nth-child(3),
+    .residential-view .row.g-3 .col-md-3:nth-child(4) {
+        margin-top: 15px;
+    }
+}
+
+/* ===========================================
+   11. RESIDENTIAL ACTION BUTTONS
+=========================================== */
+
+@media (max-width: 768px) {
+    .residential-view .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 10px !important;
+        width: 100%;
+    }
+    
+    .residential-view .d-flex.gap-2 .btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    /* Page header actions */
+    .residential-view .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 15px;
+    }
+    
+    .residential-view .d-flex.justify-content-between.align-items-center.mb-4 h2 {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+    }
+    
+    .residential-view .d-flex.justify-content-between.align-items-center.mb-4 .btn {
+        width: 100%;
+    }
+}
+
+/* Tablet: Inline buttons with wrapping */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .residential-view .d-flex.gap-2 {
+        flex-wrap: wrap;
+        gap: 10px !important;
+    }
+    
+    .residential-view .d-flex.gap-2 .btn {
+        min-width: 150px;
+    }
+}
+
+/* ===========================================
+   12. RESIDENTIAL QUICK ACTIONS PANEL
+=========================================== */
+
+@media (max-width: 768px) {
+    .residential-view .card.mb-4 .d-grid.gap-2 .btn {
+        width: 100%;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-left: 1rem;
+        text-align: left;
+    }
+    
+    .residential-view .card.mb-4 .d-grid.gap-2 .btn i {
+        margin-right: 0.75rem;
+        min-width: 24px;
+    }
+}
+
+/* ===========================================
+   13. LOADING STATES FOR CALENDAR
+=========================================== */
+
+.calendar-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border-radius: var(--radius);
+}
+
+.calendar-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--gold);
+}
+
+@media (max-width: 768px) {
+    .calendar-loading .spinner-border {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+/* ===========================================
+   14. EMPTY STATE FOR CALENDAR
+=========================================== */
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+    background-color: var(--gold);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+}
+
+@media (max-width: 480px) {
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+    }
+}
+
+/* ===========================================
+   15. CUSTOM SCROLLBAR FOR CALENDAR
+=========================================== */
+
+@media (min-width: 769px) {
+    .fc-scroller {
+        scrollbar-width: thin;
+        scrollbar-color: var(--gold) transparent;
+    }
+    
+    .fc-scroller::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .fc-scroller::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .fc-scroller::-webkit-scrollbar-thumb {
+        background-color: var(--gold);
+        border-radius: 3px;
+    }
+    
+    .fc-scroller::-webkit-scrollbar-thumb:hover {
+        background-color: #c3a035;
+    }
+}
+/* ===========================================
+   UTILITIES PAGE RESPONSIVENESS
+=========================================== */
+
+/* Utility Type Colors */
+.badge-electricity {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.badge-water {
+    background-color: #0dcaf0 !important;
+    color: #000 !important;
+}
+
+.badge-gas {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.badge-internet {
+    background-color: #6f42c1 !important;
+    color: white !important;
+}
+
+.badge-phone {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
+.badge-maintenance {
+    background-color: #fd7e14 !important;
+    color: white !important;
+}
+
+.badge-other {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
+/* Status Colors */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+    border: 1px solid #ffeaa7;
+}
+
+.status-paid {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border: 1px solid #c3e6cb;
+}
+
+.status-overdue {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+    border: 1px solid #f5c6cb;
+}
+
+/* Mobile: Adjust utility cards */
+@media (max-width: 480px) {
+    .utilities-view .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .utility-card .card-body {
+        padding: 12px !important;
+    }
+    
+    #utilityBillsTable,
+    #templatesTable {
+        font-size: 0.8rem;
+        min-width: 600px;
+    }
+    
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 0.7rem;
+    }
+    
+    .chart-container {
+        height: 200px !important;
+    }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .utilities-view .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .utility-card .card-body {
+        padding: 15px !important;
+    }
+    
+    #utilityBillsTable {
+        font-size: 0.85rem;
+    }
+    
+    .chart-container {
+        height: 250px !important;
+    }
+}
+
+/* Desktop: Full layout */
+@media (min-width: 769px) {
+    .chart-container {
+        height: 300px !important;
+    }
+}
+
+/* Table responsiveness */
+@media (max-width: 768px) {
+    #utilityBillsTable th:nth-child(5), /* Amount */
+    #utilityBillsTable td:nth-child(5),
+    #utilityBillsTable th:nth-child(7), /* Payment Date */
+    #utilityBillsTable td:nth-child(7) {
+        display: none;
+    }
+    
+    /* Make action buttons more touch-friendly */
+    .btn-group-sm .btn {
+        padding: 8px 12px;
+        margin: 2px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* Modal responsiveness */
+@media (max-width: 768px) {
+    #addUtilityModal .modal-dialog,
+    #templateModal .modal-dialog,
+    #billDetailsModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .modal-body .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    .modal-body .col-md-6 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+/* Print styles for utility reports */
+@media print {
+    .utilities-view {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    #analysisView .card,
+    #reportsView .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    .no-print,
+    .btn,
+    .modal,
+    .collapse,
+    .nav-tabs,
+    .utility-navigation {
+        display: none !important;
+    }
+    
+    .table th {
+        background-color: #f8f9fa !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .badge,
+    .status-badge {
+        border: 1px solid #000 !important;
+        background-color: white !important;
+        color: #000 !important;
+    }
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--gold);
+}
+
+/* File attachment preview */
+.file-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.file-preview:hover {
+    background: #e9ecef;
+    text-decoration: none;
+}
+
+/* Budget vs Actual colors */
+.variance-positive {
+    color: #198754 !important;
+}
+
+.variance-negative {
+    color: #dc3545 !important;
+}
+
+/* Template status */
+.template-active {
+    color: #198754;
+}
+
+.template-inactive {
+    color: #6c757d;
+}
+
+/* Chart container improvements */
+.chart-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Hover effects for table rows */
+.table-hover tbody tr:hover {
+    background-color: rgba(217, 183, 59, 0.05);
+}
+
+/* Filter section styling */
+.card .card-body.py-3 {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Tab content animations */
+.tab-pane.fade.show.active {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Utility type icons */
+.utility-icon {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin-right: 8px;
+}
+
+.utility-icon.electricity {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+.utility-icon.water {
+    background-color: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+}
+
+.utility-icon.gas {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.utility-icon.internet {
+    background-color: rgba(111, 66, 193, 0.1);
+    color: #6f42c1;
+}
+
+/* Mobile specific adjustments for forms */
+@media (max-width: 768px) {
+    .form-control, .form-select {
+        font-size: 16px !important; /* Prevents iOS zoom */
+    }
+    
+    .modal-body .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .modal-footer .btn {
+        min-height: 44px;
+        flex: 1;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-contrast: high) {
+    .status-badge {
+        border-width: 2px;
+    }
+    
+    .utility-icon {
+        border: 2px solid currentColor;
+    }
+    
+    .table-hover tbody tr:hover {
+        outline: 2px solid var(--gold);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .tab-pane.fade.show.active {
+        animation: none;
+    }
+    
+    .btn, .nav-link, .card {
+        transition: none !important;
+    }
+}
+
+/* ===========================================
+   CASH FLOW PAGE RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Adjust cash flow cards */
+@media (max-width: 480px) {
+    .cashflow-view .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .cashflow-card .card-body {
+        padding: 12px !important;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem !important;
+    }
+    
+    .cashflow-summary-card .icon-box {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 6px !important;
+    }
+    
+    .cashflow-summary-card .icon-box i {
+        font-size: 1.2rem !important;
+    }
+    
+    /* Adjust cash flow tables */
+    #dailyTransactions,
+    #monthlyDetails,
+    #projectionDetails,
+    #reconciliationItems {
+        font-size: 0.8rem;
+        min-width: 600px;
+    }
+    
+    /* Hide less important columns on mobile */
+    .cashflow-report-table th:nth-child(6), /* Payment Method */
+    .cashflow-report-table td:nth-child(6),
+    .cashflow-report-table th:nth-child(7), /* Status */
+    .cashflow-report-table td:nth-child(7) {
+        display: none;
+    }
+    
+    /* Make action buttons more touch-friendly */
+    .cashflow-report-table .btn {
+        padding: 6px 10px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    
+    /* Adjust charts */
+    #monthlyCashFlowChart,
+    #projectedCashFlowChart,
+    #trendAnalysisChart {
+        height: 200px !important;
+    }
+    
+    /* Tab adjustments */
+    #cashFlowTabs .nav-link {
+        padding: 8px 6px;
+        font-size: 0.8rem;
+    }
+    
+    #cashFlowTabs .nav-link i {
+        margin-right: 4px;
+    }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+    .cashflow-view .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .cashflow-card .card-body {
+        padding: 15px !important;
+    }
+    
+    .cashflow-summary-card .icon-box {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    /* Adjust tables */
+    .cashflow-report-table {
+        font-size: 0.85rem;
+    }
+    
+    /* Adjust charts */
+    #monthlyCashFlowChart,
+    #projectedCashFlowChart,
+    #trendAnalysisChart {
+        height: 180px !important;
+    }
+    
+    /* Tab adjustments */
+    #cashFlowTabs .nav-link {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Desktop: Full layout */
+@media (min-width: 769px) {
+    #monthlyCashFlowChart,
+    #projectedCashFlowChart,
+    #trendAnalysisChart {
+        height: 150px !important;
+    }
+}
+
+/* Modal responsiveness for cash flow */
+@media (max-width: 768px) {
+    #addTransactionModal .modal-dialog,
+    #reconciliationModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    #addTransactionModal .modal-body .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    #addTransactionModal .modal-body .col-md-6 {
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-bottom: 1rem;
+    }
+    
+    /* Form adjustments for mobile */
+    #addTransactionModal .modal-body .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    #addTransactionModal .modal-body .form-control,
+    #addTransactionModal .modal-body .form-select {
+        font-size: 16px; /* Prevents iOS zoom */
+        padding: 10px;
+        min-height: 44px;
+    }
+    
+    /* Modal footer buttons */
+    #addTransactionModal .modal-footer .btn {
+        min-height: 44px;
+        flex: 1;
+        margin: 2px;
+    }
+}
+
+/* Action buttons responsiveness */
+@media (max-width: 768px) {
+    .cashflow-view .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 10px !important;
+        width: 100%;
+    }
+    
+    .cashflow-view .d-flex.gap-2 .btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    /* Page header actions */
+    .cashflow-view .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 15px;
+    }
+    
+    .cashflow-view .d-flex.justify-content-between.align-items-center.mb-4 h2 {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+    }
+    
+    .cashflow-view .d-flex.justify-content-between.align-items-center.mb-4 .btn {
+        width: 100%;
+    }
+}
+
+/* Tablet: Inline buttons with wrapping */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .cashflow-view .d-flex.gap-2 {
+        flex-wrap: wrap;
+        gap: 10px !important;
+    }
+    
+    .cashflow-view .d-flex.gap-2 .btn {
+        min-width: 150px;
+    }
+}
+
+/* Date range picker adjustments */
+@media (max-width: 768px) {
+    .daterangepicker {
+        width: 100% !important;
+        max-width: 300px;
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+    
+    .daterangepicker .calendar {
+        float: none !important;
+        width: 100% !important;
+    }
+    
+    .daterangepicker .ranges {
+        display: none !important;
+    }
+    
+    #dateRangePicker {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Loading overlay responsiveness */
+@media (max-width: 768px) {
+    .cashflow-loading .spinner-border {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+/* Reconciliation status indicators */
+@media (max-width: 480px) {
+    .reconciliation-status {
+        width: 8px;
+        height: 8px;
+        margin-right: 4px;
+    }
+    
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Chart container adjustments for mobile */
+@media (max-width: 768px) {
+    .chart-container {
+        position: relative;
+        height: 200px !important;
+        margin: 0 -10px;
+        width: calc(100% + 20px);
+    }
+    
+    .card-body h6.card-title {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .cashflow-view {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    .cashflow-card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+    
+    .no-print,
+    .btn,
+    .modal,
+    .collapse,
+    .cashflow-navigation,
+    .nav-tabs,
+    .daterangepicker {
+        display: none !important;
+    }
+    
+    .cashflow-report-table {
+        font-size: 10pt !important;
+        break-inside: avoid;
+    }
+    
+    .table th {
+        background-color: #f8f9fa !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .badge,
+    .status-badge,
+    .reconciliation-status {
+        border: 1px solid #000 !important;
+        background-color: white !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Hide charts in print */
+    .chart-container {
+        display: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .cashflow-card {
+        border-width: 2px;
+    }
+    
+    .reconciliation-status {
+        border: 1px solid currentColor;
+    }
+    
+    .variance-indicator {
+        border: 1px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .cashflow-card,
+    .cashflow-summary-card,
+    .alert-low-balance {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .cashflow-view .row.g-3 {
+        margin-bottom: 10px;
+    }
+    
+    .cashflow-card .card-body {
+        padding: 8px !important;
+    }
+    
+    .stat-value {
+        font-size: 1rem !important;
+    }
+    
+    .chart-container {
+        height: 150px !important;
+    }
+}
+
+/* ===========================================
+   ADMIN SETTINGS RESPONSIVENESS
+=========================================== */
+
+/* Mobile: Adjust settings layout */
+@media (max-width: 480px) {
+  .settings-view .d-flex.justify-content-between.align-items-center.mb-4 {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 15px;
+  }
+  
+  .settings-view .d-flex.justify-content-between.align-items-center.mb-4 h2 {
+    margin-bottom: 0;
+    font-size: 1.5rem;
+  }
+  
+  .settings-view .d-flex.justify-content-between.align-items-center.mb-4 .d-flex.gap-2 {
+    width: 100%;
+  }
+  
+  .settings-view .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+  
+  .settings-view .d-flex.gap-2 .btn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  /* Tabs on mobile */
+  #settingsTab {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+  }
+  
+  #settingsTab .nav-link {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+  
+  #settingsTab .nav-link i {
+    margin-right: 4px;
+  }
+  
+  /* Form adjustments */
+  .settings-form .row {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  
+  .settings-form .col-lg-8,
+  .settings-form .col-lg-6,
+  .settings-form .col-lg-4,
+  .settings-form .col-md-6,
+  .settings-form .col-md-4 {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  .modal-footer .btn {
+    min-height: 44px;
+    flex: 1;
+    margin: 2px;
+  }
+  
+  /* Users table adjustments */
+  #usersTable th:nth-child(5), /* Last Login */
+  #usersTable td:nth-child(5),
+  #usersTable th:nth-child(6), /* Actions */
+  #usersTable td:nth-child(6) {
+    display: none;
+  }
+  
+  .btn-group.btn-group-sm {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .btn-group.btn-group-sm .btn {
+    min-width: 36px;
+    min-height: 36px;
+  }
+  
+  /* System info table */
+  .system-info-table td:first-child {
+    min-width: 140px;
+  }
+}
+
+/* Tablet: Adjust layout */
+@media (min-width: 481px) and (max-width: 768px) {
+  .settings-view .d-flex.gap-2 {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+  
+  .settings-view .d-flex.gap-2 .btn {
+    min-width: 150px;
+  }
+  
+  /* Tabs on tablet */
+  #settingsTab {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  #settingsTab .nav-link {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+  
+  /* Form adjustments */
+  .settings-form .col-lg-8,
+  .settings-form .col-lg-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .settings-form .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  
+  /* Users table */
+  #usersTable th:nth-child(6), /* Actions */
+  #usersTable td:nth-child(6) {
+    min-width: 120px;
+  }
+  
+  .btn-group.btn-group-sm .btn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Desktop: Full layout */
+@media (min-width: 769px) {
+  #settingsTab .nav-link {
+    font-size: 0.9rem;
+  }
+}
+
+/* Large desktop: Optimize layout */
+@media (min-width: 1200px) {
+  .settings-form .col-lg-8 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+  
+  .settings-form .col-lg-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}
+
+/* Modal responsiveness */
+@media (max-width: 768px) {
+  #addRoleModal .modal-dialog,
+  #backupModal .modal-dialog,
+  #importModal .modal-dialog,
+  #clearCacheModal .modal-dialog {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .modal-body .row {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  
+  .modal-body .col-md-6 {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Form adjustments in modals */
+  .modal-body .form-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .modal-body .form-control,
+  .modal-body .form-select {
+    font-size: 16px; /* Prevents iOS zoom */
+    padding: 10px;
+    min-height: 44px;
+  }
+}
+
+/* Print styles for admin settings */
+@media print {
+  .settings-view {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+  
+  #settingsTab {
+    display: none !important;
+  }
+  
+  .tab-content > .tab-pane {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+  
+  .tab-content > .tab-pane:not(.active) {
+    display: none !important;
+  }
+  
+  .card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  
+  .table th {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #000 !important;
+  }
+  
+  .badge {
+    border: 1px solid #000 !important;
+    background-color: white !important;
+    color: #000 !important;
+  }
+  
+  .btn,
+  .modal,
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .settings-view .row.g-3 {
+    margin-bottom: 10px;
+  }
+  
+  .settings-card .card-body {
+    padding: 12px !important;
+  }
+  
+  .card-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.75rem;
+  }
+  
+  #settingsTab .nav-link {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  #settingsTab .nav-link i {
+    margin-right: 4px;
+  }
+  
+  .modal-dialog {
+    margin: 5px;
+  }
+  
+  .modal-body {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .settings-form .form-control,
+  .settings-form .form-select {
+    border-width: 2px;
+  }
+  
+  .permission-group {
+    border-width: 2px;
+  }
+  
+  .api-key-display {
+    border: 2px solid #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .settings-card,
+  #settingsTab .nav-link,
+  .btn,
+  .form-check-input {
+    transition: none;
+  }
+}

@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BGMS — Payments Management</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="assets/css/styles.css" rel="stylesheet">
+  <link href="assets/css/responsive.css" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar d-flex align-items-center justify-content-between px-3">
+    <div class="topbar-header px-3 py-1 d-flex align-items-center gap-2">
+      <div class="admin-logo-box">
+        <img src="assets/images/logo.png" alt="">
+      </div>
+    </div>
+
+    <!-- RIGHT ACTIONS -->
+    <div style="flex-direction: column;" class="d-flex  align-items-center gap-3">
+      <div class="role-switcher">
+        <select id="roleSelect" class="form-select form-select-sm">
+          <option value="superadmin">Super Admin</option>
+          <option value="finance">Finance Officer</option>
+          <option value="membership">Membership Officer</option>
+        </select>
+      </div>
+
+      <div class="profile-dropdown dropdown">
+        <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle me-1"></i>My Profile
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">My Profile</a></li>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </div>
+       <button class="mobile-menu-toggle mobile-only ms-2" id="mobileMenuToggle">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-root d-flex">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar d-flex flex-column" id="sidebar">
+      <nav class="nav flex-column px-2" id="main-nav">
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="superadmin.html">
+          <i class="bi bi-speedometer2 me-2"></i><span>Dashboard</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="members.html">
+          <i class="bi bi-people-fill me-2"></i><span>Members</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="users.html">
+          <i class="bi bi-person-badge me-2"></i><span>Users</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="billing.html">
+          <i class="bi bi-receipt-cutoff me-2"></i><span>Billing</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center active" data-role="all" href="payments.html">
+          <i class="bi bi-credit-card me-2"></i><span>Payments</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="reports.html">
+          <i class="bi bi-file-bar-graph me-2"></i><span>Reports</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="accounting.html">
+          <i class="bi bi-bank me-2"></i><span>Accounting</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="facilities.html">
+          <i class="bi bi-card-checklist me-2"></i><span>Facilities</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="finance" href="residential.html">
+          <i class="bi bi-houses me-2"></i><span>Residential</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="finance" href="utilities.html">
+          <i class="bi bi-lightning-charge me-2"></i><span>Utilities</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="admin" href="cashflow.html">
+          <i class="bi bi-cash-stack me-2"></i><span>Cash Flow</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="admin" href="admin-settings.html">
+          <i class="bi bi-gear me-2"></i><span>Admin Settings</span>
+        </a>
+
+      </nav>
+      <div class="sidebar-footer d-none d-lg-block mt-auto">
+        <div class="text-center small text-muted py-2">
+          <div>BGMS v1.0</div>
+          <div class="mt-1">© 2025 Burewala Gymkhana</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div id="main" class="main flex-grow-1">
+      <main class="content p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="mb-0">Payments Management</h2>
+          <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#recordPaymentModal">
+            <i class="bi bi-plus-circle me-1"></i> Record Payment
+          </button>
+        </div>
+
+        <!-- PAYMENT STATS -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Today's Collection</div>
+                <div class="stat-value text-success" id="todaysCollection">PKR 45,800</div>
+                <small class="text-muted" id="todayCount">12 payments</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">This Month</div>
+                <div class="stat-value" id="monthlyCollection">PKR 180,500</div>
+                <small class="text-muted" id="monthCount">85 payments</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Cash</div>
+                <div class="stat-value text-primary" id="cashCollection">PKR 85,200</div>
+                <small class="text-muted">48% of total</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-title">Digital</div>
+                <div class="stat-value text-info" id="digitalCollection">PKR 95,300</div>
+                <small class="text-muted">52% of total</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title">Payment Methods Distribution</h6>
+                <div class="chart-container" style="height: 200px; position: relative;">
+                  <canvas id="paymentMethodsChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title">Daily Collection (Last 7 Days)</h6>
+                <div class="chart-container" style="height: 200px; position: relative;">
+                  <canvas id="dailyCollectionChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK FILTERS -->
+        <div class="card mb-4">
+          <div class="card-body py-3">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="date" class="form-control" id="dateFilter" value="">
+                  <button class="btn btn-outline-gold" id="dateFilterBtn">
+                    <i class="bi bi-calendar me-1"></i> Filter by Date
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <select class="form-select" id="methodFilter">
+                    <option value="">All Methods</option>
+                    <option value="cash">Cash</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="easypaisa">Easypaisa</option>
+                    <option value="jazzcash">JazzCash</option>
+                  </select>
+                  <button class="btn btn-outline-primary" id="methodFilterBtn">
+                    <i class="bi bi-filter me-1"></i> Filter
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search by member, invoice, or reference..." id="searchInput">
+                  <button class="btn btn-outline-secondary" id="searchBtn">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3 mt-2">
+              <div class="col-md-8">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="filterToday" checked>
+                  <label class="form-check-label" for="filterToday">Today</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="filterThisWeek">
+                  <label class="form-check-label" for="filterThisWeek">This Week</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="filterThisMonth">
+                  <label class="form-check-label" for="filterThisMonth">This Month</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="filterCash">
+                  <label class="form-check-label" for="filterCash">Cash Only</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="filterDigital">
+                  <label class="form-check-label" for="filterDigital">Digital Only</label>
+                </div>
+              </div>
+              <div class="col-md-4 text-end">
+                <button class="btn btn-sm btn-outline-success" id="exportPaymentsBtn">
+                  <i class="bi bi-download me-1"></i> Export
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAYMENTS TABLE -->
+        <div class="card">
+          <div class="card-body py-2">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <button class="btn btn-sm btn-outline-danger" id="bulkDeleteBtn">
+                  <i class="bi bi-trash me-1"></i> Delete Selected
+                </button>
+                <button class="btn btn-sm btn-outline-primary ms-2" id="bulkPrintReceiptsBtn">
+                  <i class="bi bi-printer me-1"></i> Print Receipts
+                </button>
+              </div>
+              <div class="text-muted small">
+                Showing <span id="showingCount">0</span> payments
+              </div>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 40px;">
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input" type="checkbox" id="selectAllHeader">
+                      </div>
+                    </th>
+                    <th>Payment ID</th>
+                    <th>Invoice #</th>
+                    <th>Member</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Received By</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTableBody">
+                  <!-- Dynamic content will be inserted here -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <nav aria-label="Payments pagination" class="mt-3">
+              <ul class="pagination justify-content-center" id="pagination">
+                <li class="page-item disabled" id="prevPage">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#" data-page="1">1</a></li>
+                <li class="page-item"><a class="page-link" href="#" data-page="2">2</a></li>
+                <li class="page-item"><a class="page-link" href="#" data-page="3">3</a></li>
+                <li class="page-item" id="nextPage">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- RECORD PAYMENT MODAL -->
+  <div class="modal fade" id="recordPaymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Record New Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="recordPaymentForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Select Member *</label>
+                <select class="form-select" id="paymentMemberSelect" required>
+                  <option value="">Select Member</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Select Invoice (Optional)</label>
+                <select class="form-select" id="paymentInvoiceSelect">
+                  <option value="">Select Invoice</option>
+                  <option value="direct">Direct Payment (No Invoice)</option>
+                  <!-- Invoice options will be populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Payment Amount (PKR) *</label>
+                <input type="number" class="form-control" id="paymentAmount" required min="1" step="100">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Payment Date *</label>
+                <input type="date" class="form-control" id="paymentDate" required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Payment Method *</label>
+                <select class="form-select" id="paymentMethod" required>
+                  <option value="">Select Method</option>
+                  <option value="cash">Cash</option>
+                  <option value="bank_transfer">Bank Transfer</option>
+                  <option value="cheque">Cheque</option>
+                  <option value="credit_card">Credit Card</option>
+                  <option value="easypaisa">Easypaisa</option>
+                  <option value="jazzcash">JazzCash</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Received By *</label>
+                <select class="form-select" id="receivedBy" required>
+                  <option value="">Select User</option>
+                  <option value="admin">Admin User</option>
+                  <option value="finance">Finance Officer</option>
+                  <option value="membership">Membership Officer</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3" id="paymentDetailsSection" style="display: none;">
+              <div class="col-md-6" id="bankDetails" style="display: none;">
+                <label class="form-label">Bank Details</label>
+                <input type="text" class="form-control" placeholder="Bank name, account number, etc.">
+              </div>
+              <div class="col-md-6" id="chequeDetails" style="display: none;">
+                <label class="form-label">Cheque Details</label>
+                <input type="text" class="form-control" placeholder="Cheque number, bank, etc.">
+              </div>
+              <div class="col-md-6" id="mobileWalletDetails" style="display: none;">
+                <label class="form-label">Mobile Wallet Details</label>
+                <input type="text" class="form-control" placeholder="Wallet number, transaction ID, etc.">
+              </div>
+              <div class="col-md-6" id="referenceDetails" style="display: none;">
+                <label class="form-label">Reference Number *</label>
+                <input type="text" class="form-control" placeholder="Transaction/Reference number">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Payment Description</label>
+              <textarea class="form-control" id="paymentDescription" rows="2" placeholder="e.g., Monthly membership fee, Facility charges, etc."></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Notes (Optional)</label>
+              <textarea class="form-control" id="paymentNotes" rows="2"></textarea>
+            </div>
+
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              This payment will be recorded in the system and will update the member's balance automatically.
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="recordPaymentForm" class="btn btn-gold">Record Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW PAYMENT MODAL -->
+  <div class="modal fade" id="viewPaymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Payment Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="paymentDetailsContent">
+          <!-- Payment details will be loaded here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-primary" id="printReceiptBtn">
+            <i class="bi bi-printer me-1"></i> Print Receipt
+          </button>
+          <button type="button" class="btn btn-outline-danger" id="voidPaymentBtn">
+            <i class="bi bi-x-circle me-1"></i> Void Payment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT PAYMENT MODAL -->
+  <div class="modal fade" id="editPaymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editPaymentForm">
+            <div class="mb-3">
+              <label class="form-label">Payment ID</label>
+              <input type="text" class="form-control" id="editPaymentId" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Payment Amount (PKR) *</label>
+              <input type="number" class="form-control" id="editPaymentAmount" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Payment Method *</label>
+              <select class="form-select" id="editPaymentMethod" required>
+                <option value="cash">Cash</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="cheque">Cheque</option>
+                <option value="credit_card">Credit Card</option>
+                <option value="easypaisa">Easypaisa</option>
+                <option value="jazzcash">JazzCash</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Payment Date *</label>
+              <input type="date" class="form-control" id="editPaymentDate" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" id="editPaymentNotes" rows="2"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="editPaymentForm" class="btn btn-gold">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT RECEIPT TEMPLATE (Hidden) -->
+  <div id="receiptPrint" style="display: none;">
+    <!-- This will be populated for printing -->
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Payments Management JS -->
+  <script src="assets/js/payments.js"></script>
+
+  <style>
+    .payment-status {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-completed { background-color: #d1e7dd; color: #0f5132; }
+    .status-pending { background-color: #fff3cd; color: #856404; }
+    .status-void { background-color: #f8d7da; color: #842029; }
+    .status-refunded { background-color: #cfe2ff; color: #084298; }
+    
+    .method-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .method-cash { background-color: #d1e7dd; color: #0f5132; }
+    .method-bank { background-color: #cfe2ff; color: #084298; }
+    .method-cheque { background-color: #e2e3e5; color: #41464b; }
+    .method-digital { background-color: #d2f4ea; color: #0d6e4e; }
+    
+    .payment-item-row {
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .payment-item-row:hover {
+      background-color: rgba(0,0,0,0.02);
+    }
+    
+    .nav-link.active {
+      background-color: rgba(255, 215, 0, 0.1);
+      color: white;
+      font-weight: 900;
+      border-left: 3px solid #daa520;
+    }
+    
+    .btn-gold {
+      background-color: #daa520;
+      border-color: #daa520;
+      color: white;
+    }
+    
+    .btn-gold:hover {
+      background-color: #b8860b;
+      border-color: #b8860b;
+      color: white;
+    }
+    
+    .btn-outline-gold {
+      color: #daa520;
+      border-color: #daa520;
+    }
+    
+    .btn-outline-gold:hover {
+      background-color: #daa520;
+      color: white;
+    }
+    
+    /* Receipt print styles */
+    .receipt-print {
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      background: white;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .receipt-header {
+      text-align: center;
+      border-bottom: 2px dashed #ccc;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+    .receipt-body {
+      margin-bottom: 15px;
+    }
+    .receipt-footer {
+      border-top: 2px dashed #ccc;
+      padding-top: 15px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .receipt-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .receipt-line.total {
+      font-weight: bold;
+      border-top: 1px solid #000;
+      padding-top: 5px;
+      margin-top: 10px;
+    }
+    
+    /* Chart container styles */
+    .chart-container {
+      position: relative;
+      height: 200px;
+      min-height: 200px;
+      max-height: 200px;
+    }
+    
+    .chart-container canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    
+    /* Ensure card body doesn't expand */
+    .card .card-body {
+      overflow: hidden;
+    }
+    
+    /* Prevent chart expansion */
+    #paymentMethodsChart, #dailyCollectionChart {
+      max-height: 200px !important;
+      min-height: 200px !important;
+      height: 200px !important;
+    }
+  </style>
+</body>
+
+</html>

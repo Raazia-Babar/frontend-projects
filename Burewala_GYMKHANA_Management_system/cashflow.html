@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BGMS - Cash Flow Management</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Date Range Picker -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    
+    <!-- Custom CSS -->
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/cashflow.css">
+</head>
+<body>
+    <!-- TOPBAR -->
+     <!-- TOPBAR -->
+  <header class="topbar d-flex align-items-center justify-content-between px-3">
+    <div class="topbar-header px-3 py-1 d-flex align-items-center gap-2">
+      <div class="admin-logo-box">
+        <img src="assets/images/logo.png" alt="">
+      </div>
+    </div>
+
+    <!-- RIGHT ACTIONS -->
+    <div style="flex-direction: column;" class="d-flex  align-items-center gap-3">
+      <div class="role-switcher">
+        <select id="roleSelect" class="form-select form-select-sm">
+          <option value="superadmin">Super Admin</option>
+          <option value="finance">Finance Officer</option>
+          <option value="membership">Membership Officer</option>
+        </select>
+      </div>
+
+      <div class="profile-dropdown dropdown">
+        <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle me-1"></i>My Profile
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">My Profile</a></li>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </div>
+       <button class="mobile-menu-toggle mobile-only ms-2" id="mobileMenuToggle">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+  </header>
+    
+    <div class="app-root d-flex">
+        <!-- SIDEBAR -->
+        <aside class="sidebar d-flex flex-column" id="sidebar">
+            <nav class="nav flex-column px-2" id="main-nav">
+                <a class="nav-link d-flex align-items-center" data-role="all" href="superadmin.html">
+                    <i class="bi bi-speedometer2 me-2"></i><span>Dashboard</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="members.html">
+                    <i class="bi bi-people-fill me-2"></i><span>Members</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="users.html">
+                    <i class="bi bi-people-fill me-2"></i><span>Users</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="billing.html">
+                    <i class="bi bi-receipt-cutoff me-2"></i><span>Billing</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="payments.html">
+                    <i class="bi bi-credit-card me-2"></i><span>Payments</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="reports.html">
+                    <i class="bi bi-file-bar-graph me-2"></i><span>Reports</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="accounting.html">
+                    <i class="bi bi-bank me-2"></i><span>Accounting</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="all" href="facilities.html">
+                    <i class="bi bi-card-checklist me-2"></i><span>Facilities</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="finance" href="residential.html">
+                    <i class="bi bi-houses me-2"></i><span>Residential</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="finance" href="utilities.html">
+                    <i class="bi bi-lightning-charge me-2"></i><span>Utilities</span>
+                </a>
+                <a class="nav-link d-flex align-items-center active" data-role="admin" href="cashflow.html">
+                    <i class="bi bi-cash-stack me-2"></i><span>Cash Flow</span>
+                </a>
+                <a class="nav-link d-flex align-items-center" data-role="admin" href="admin-settings.html">
+                    <i class="bi bi-gear me-2"></i><span>Admin Settings</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- MAIN CONTENT -->
+        <div id="main" class="main flex-grow-1">
+            <main class="content p-4">
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Cash Flow Management</h2>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#addTransactionModal">
+                            <i class="bi bi-plus-circle me-1"></i>Add Transaction
+                        </button>
+                        <button class="btn btn-outline-gold" onclick="printCashFlowReport()">
+                            <i class="bi bi-printer me-1"></i>Print Report
+                        </button>
+                        <button class="btn btn-outline-gold" onclick="exportToExcel()">
+                            <i class="bi bi-file-earmark-excel me-1"></i>Export
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- FR-CSH-04: Dashboard Widgets for Quick Cash Position Viewing -->
+                <div class="row g-3 mb-4">
+                    <!-- Today's Cash Position -->
+                    <div class="col-12 col-md-3">
+                        <div class="card cashflow-summary-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="stat-title">Today's Cash Position</div>
+                                        <div class="stat-value" id="todayCashPosition">PKR 245,850</div>
+                                        <div class="text-muted small">
+                                            <span id="cashTrend" class="trend-up">
+                                                <i class="bi bi-arrow-up-right me-1"></i>12.5% from yesterday
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="icon-box bg-success bg-opacity-10 rounded-circle p-2">
+                                        <i class="bi bi-cash-stack text-success fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly Cash Flow -->
+                    <div class="col-12 col-md-3">
+                        <div class="card cashflow-summary-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="stat-title">Monthly Net Flow</div>
+                                        <div class="stat-value" id="monthlyNetFlow">PKR 1,245,500</div>
+                                        <div class="text-muted small">
+                                            Receipts: PKR 1,850,200 | Payments: PKR 604,700
+                                        </div>
+                                    </div>
+                                    <div class="icon-box bg-primary bg-opacity-10 rounded-circle p-2">
+                                        <i class="bi bi-arrow-left-right text-primary fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Projected Balance -->
+                    <div class="col-12 col-md-3">
+                        <div class="card cashflow-summary-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="stat-title">Projected EOM Balance</div>
+                                        <div class="stat-value" id="projectedBalance">PKR 3,145,200</div>
+                                        <div class="text-muted small">
+                                            <span id="projectionVariance" class="variance-positive">
+                                                <i class="bi bi-check-circle me-1"></i>On track
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="icon-box bg-warning bg-opacity-10 rounded-circle p-2">
+                                        <i class="bi bi-graph-up-arrow text-warning fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FR-CSH-07: Cash Position Alerts -->
+                    <div class="col-12 col-md-3">
+                        <div class="card cashflow-summary-card" id="cashAlertCard">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="stat-title">Alerts & Notifications</div>
+                                        <div class="stat-value small">
+                                            <span id="alertStatus" class="text-success">
+                                                <i class="bi bi-check-circle me-1"></i>All Good
+                                            </span>
+                                        </div>
+                                        <div class="text-muted small mt-1">
+                                            <div id="alertMessages">
+                                                No critical alerts
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="icon-box bg-info bg-opacity-10 rounded-circle p-2">
+                                        <i class="bi bi-bell text-info fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Date Range Selector -->
+                <div class="card mb-4">
+                    <div class="card-body py-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h6 class="mb-0">Cash Flow Period</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="dateRangePicker" 
+                                           placeholder="Select date range">
+                                    <button class="btn btn-outline-gold" type="button" onclick="loadCashFlowData()">
+                                        <i class="bi bi-filter"></i> Apply
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabs for Different Views -->
+                <ul class="nav nav-tabs mb-4" id="cashFlowTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" 
+                                data-bs-target="#daily" type="button" role="tab">
+                            <i class="bi bi-calendar-day me-1"></i>Daily Statement
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" 
+                                data-bs-target="#monthly" type="button" role="tab">
+                            <i class="bi bi-calendar-month me-1"></i>Monthly Summary
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="projected-tab" data-bs-toggle="tab" 
+                                data-bs-target="#projected" type="button" role="tab">
+                            <i class="bi bi-graph-up-arrow me-1"></i>Projected Cash Flow
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="trend-tab" data-bs-toggle="tab" 
+                                data-bs-target="#trend" type="button" role="tab">
+                            <i class="bi bi-bar-chart me-1"></i>Trend Analysis
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reconciliation-tab" data-bs-toggle="tab" 
+                                data-bs-target="#reconciliation" type="button" role="tab">
+                            <i class="bi bi-arrow-repeat me-1"></i>Bank Reconciliation
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Tab Content -->
+                <div class="tab-content" id="cashFlowTabContent">
+                    <!-- FR-CSH-01: Daily Cash Flow Statement -->
+                    <div class="tab-pane fade show active" id="daily" role="tabpanel">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card cashflow-card opening-balance">
+                                    <div class="card-body">
+                                        <div class="stat-title">Opening Balance</div>
+                                        <div class="stat-value">PKR 215,500</div>
+                                        <div class="text-muted small">As of today</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card cashflow-card receipts">
+                                    <div class="card-body">
+                                        <div class="stat-title">Today's Receipts</div>
+                                        <div class="stat-value">PKR 85,350</div>
+                                        <div class="text-muted small">12 transactions</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card cashflow-card payments">
+                                    <div class="card-body">
+                                        <div class="stat-title">Today's Payments</div>
+                                        <div class="stat-value">PKR 55,000</div>
+                                        <div class="text-muted small">8 transactions</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card cashflow-card closing-balance">
+                                    <div class="card-body">
+                                        <div class="stat-title">Closing Balance</div>
+                                        <div class="stat-value">PKR 245,850</div>
+                                        <div class="text-muted small">Projected EOD</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Daily Transactions Table -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3">Daily Transactions - <span id="currentDate">Today, 15 Dec 2024</span></h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover cashflow-report-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Type</th>
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Amount</th>
+                                                <th>Payment Method</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dailyTransactions">
+                                            <!-- Data will be populated by JavaScript -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="table-light">
+                                                <td colspan="4" class="text-end fw-bold">Net Cash Flow:</td>
+                                                <td class="fw-bold">PKR 30,350</td>
+                                                <td colspan="3"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FR-CSH-02: Monthly Cash Flow Summarization -->
+                    <div class="tab-pane fade" id="monthly" role="tabpanel">
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Monthly Cash Flow Overview - December 2024</h6>
+                                        <canvas id="monthlyCashFlowChart" height="150"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Monthly Summary</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Opening Balance:</span>
+                                                <span class="fw-bold">PKR 2,150,000</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Total Receipts:</span>
+                                                <span class="fw-bold text-success">PKR 1,850,200</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Total Payments:</span>
+                                                <span class="fw-bold text-danger">PKR 604,700</span>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Net Cash Flow:</span>
+                                                <span class="fw-bold">PKR 1,245,500</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Closing Balance:</span>
+                                                <span class="fw-bold">PKR 3,395,500</span>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-info">
+                                            <small>
+                                                <i class="bi bi-info-circle me-1"></i>
+                                                Net cash flow increased by 18.5% compared to last month
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Details Table -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3">Monthly Cash Flow Details</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Opening</th>
+                                                <th>Receipts</th>
+                                                <th>Payments</th>
+                                                <th>Net Flow</th>
+                                                <th>Closing</th>
+                                                <th>Trend</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="monthlyDetails">
+                                            <!-- Data will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FR-CSH-03 & FR-CSH-06: Projected Cash Flow with Variance Analysis -->
+                    <div class="tab-pane fade" id="projected" role="tabpanel">
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Projected vs Actual Cash Flow - Next 30 Days</h6>
+                                        <canvas id="projectedCashFlowChart" height="150"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Variance Analysis</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Projected Receipts:</span>
+                                                <span class="fw-bold">PKR 2,150,000</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Actual Receipts:</span>
+                                                <span class="fw-bold">PKR 1,850,200</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Variance:</span>
+                                                <span class="fw-bold variance-negative">-PKR299,800</span>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Projected Payments:</span>
+                                                <span class="fw-bold">PKR 750,000</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Actual Payments:</span>
+                                                <span class="fw-bold">PKR 604,700</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Variance:</span>
+                                                <span class="fw-bold variance-positive">+PKR 145,300</span>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Net Variance:</span>
+                                                <span class="fw-bold variance-negative">-PKR 154,500</span>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-warning">
+                                            <small>
+                                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                                Receipts are 13.9% below projection
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Projected Cash Flow Table -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3">Cash Flow Projection Details</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Week</th>
+                                                <th>Expected Income</th>
+                                                <th>Expected Expenses</th>
+                                                <th>Projected Net</th>
+                                                <th>Actual Net</th>
+                                                <th>Variance</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="projectionDetails">
+                                            <!-- Data will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FR-CSH-05: Cash Flow Trend Analysis -->
+                    <div class="tab-pane fade" id="trend" role="tabpanel">
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Cash Flow Trend Analysis - Last 12 Months</h6>
+                                        <canvas id="trendAnalysisChart" height="150"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Key Insights</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="me-3">
+                                                    <i class="bi bi-arrow-up-right-circle fs-4 text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold">Seasonal Pattern</div>
+                                                    <small class="text-muted">Peak cash inflow in December & June</small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="me-3">
+                                                    <i class="bi bi-arrow-down-right-circle fs-4 text-danger"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold">Expense Trend</div>
+                                                    <small class="text-muted">Utilities increased by 15% YoY</small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="bi bi-graph-up-arrow fs-4 text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold">Growth Rate</div>
+                                                    <small class="text-muted">Average monthly growth: 8.2%</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-success">
+                                            <small>
+                                                <i class="bi bi-lightning-charge me-1"></i>
+                                                Cash position is improving steadily
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trend Metrics -->
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="stat-title">Avg Monthly Growth</div>
+                                        <div class="stat-value">8.2%</div>
+                                        <div class="text-muted small">Last 12 months</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="stat-title">Cash Cycle Days</div>
+                                        <div class="stat-value">14.5</div>
+                                        <div class="text-muted small">From receipt to payment</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="stat-title">Liquidity Ratio</div>
+                                        <div class="stat-value">3.2</div>
+                                        <div class="text-muted small">Current assets/liabilities</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="stat-title">Cash Reserve Days</div>
+                                        <div class="stat-value">45</div>
+                                        <div class="text-muted small">Operating expenses covered</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FR-CSH-08: Bank Reconciliation Support -->
+                    <div class="tab-pane fade" id="reconciliation" role="tabpanel">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Bank Reconciliation Status</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span>Bank Statement Balance:</span>
+                                                <span class="fw-bold">PKR 3,392,150</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span>Book Balance:</span>
+                                                <span class="fw-bold">PKR 3,395,500</span>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span>Difference:</span>
+                                                <span class="fw-bold variance-negative">-PKR 3,350</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>Reconciliation Status:</span>
+                                                <span class="badge bg-warning">Pending Items</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-gold w-100" onclick="startReconciliation()">
+                                            <i class="bi bi-arrow-repeat me-1"></i>Start Reconciliation
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Reconciliation Summary</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="reconciliation-status status-reconciled"></span>
+                                                <span>Reconciled Transactions:</span>
+                                                <span class="ms-auto fw-bold">245</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="reconciliation-status status-pending"></span>
+                                                <span>Pending Reconciliation:</span>
+                                                <span class="ms-auto fw-bold">8</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="reconciliation-status status-discrepancy"></span>
+                                                <span>Discrepancies Found:</span>
+                                                <span class="ms-auto fw-bold">2</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span><i class="bi bi-calendar-check me-2"></i></span>
+                                                <span>Last Reconciled:</span>
+                                                <span class="ms-auto fw-bold">14 Dec 2024</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline-gold w-100" onclick="viewReconciliationReport()">
+                                            <i class="bi bi-file-earmark-text me-1"></i>View Report
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reconciliation Items -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3">Pending Reconciliation Items</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Description</th>
+                                                <th>Book Amount</th>
+                                                <th>Bank Amount</th>
+                                                <th>Difference</th>
+                                                <th>Type</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reconciliationItems">
+                                            <!-- Data will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Add Transaction Modal -->
+    <div class="modal fade" id="addTransactionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Cash Transaction</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="transactionForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Transaction Type *</label>
+                                <select class="form-select" id="transactionType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="receipt">Receipt (Cash In)</option>
+                                    <option value="payment">Payment (Cash Out)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date & Time *</label>
+                                <input type="datetime-local" class="form-control" id="transactionDate" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Description *</label>
+                                <input type="text" class="form-control" id="transactionDescription" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Category *</label>
+                                <select class="form-select" id="transactionCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="membership">Membership Fees</option>
+                                    <option value="facility">Facility Booking</option>
+                                    <option value="residential">Residential Rent</option>
+                                    <option value="utility">Utility Payment</option>
+                                    <option value="salary">Staff Salary</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="supplies">Supplies Purchase</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Amount (PKR) *</label>
+                                <input type="number" class="form-control" id="transactionAmount" step="0.01" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Payment Method *</label>
+                                <select class="form-select" id="paymentMethod" required>
+                                    <option value="">Select Method</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank_transfer">Bank Transfer</option>
+                                    <option value="cheque">Cheque</option>
+                                    <option value="card">Credit/Debit Card</option>
+                                    <option value="online">Online Payment</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Reference Number</label>
+                                <input type="text" class="form-control" id="referenceNumber">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Notes</label>
+                                <textarea class="form-control" id="transactionNotes" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="isReconciled">
+                                    <label class="form-check-label" for="isReconciled">
+                                        Mark as reconciled with bank statement
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-gold" onclick="saveTransaction()">Save Transaction</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reconciliation Details Modal -->
+    <div class="modal fade" id="reconciliationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reconciliation Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="reconciliationDetails">
+                    <!-- Content loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="assets/js/cashFlow.js"></script>
+</body>
+</html>

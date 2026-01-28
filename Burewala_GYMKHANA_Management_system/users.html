@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BGMS — Users Management</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="assets/css/styles.css" rel="stylesheet">
+  <link href="assets/css/responsive.css" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+</head>
+
+<body>
+
+   <!-- TOPBAR -->
+  <header class="topbar d-flex align-items-center justify-content-between px-3">
+    <div class="topbar-header px-3 py-1 d-flex align-items-center gap-2">
+      <div class="admin-logo-box">
+        <img src="assets/images/logo.png" alt="">
+      </div>
+    </div>
+
+    <!-- RIGHT ACTIONS -->
+    <div style="flex-direction: column;" class="d-flex  align-items-center gap-3">
+      <div class="role-switcher">
+        <select id="roleSelect" class="form-select form-select-sm">
+          <option value="superadmin">Super Admin</option>
+          <option value="finance">Finance Officer</option>
+          <option value="membership">Membership Officer</option>
+        </select>
+      </div>
+
+      <div class="profile-dropdown dropdown">
+        <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle me-1"></i>My Profile
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">My Profile</a></li>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </div>
+       <button class="mobile-menu-toggle mobile-only ms-2" id="mobileMenuToggle">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-root d-flex">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar d-flex flex-column" id="sidebar">
+      <nav class="nav flex-column px-2" id="main-nav">
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="superadmin.html">
+          <i class="bi bi-speedometer2 me-2"></i><span>Dashboard</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="members.html">
+          <i class="bi bi-people-fill me-2"></i><span>Members</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center active" data-role="all" href="users.html">
+          <i class="bi bi-person-badge me-2"></i><span>Users</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="billing.html">
+          <i class="bi bi-receipt-cutoff me-2"></i><span>Billing</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="payments.html">
+  <i class="bi bi-credit-card me-2"></i><span>Payments</span>
+</a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="reports.html">
+          <i class="bi bi-file-bar-graph me-2"></i><span>Reports</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="accounting.html">
+          <i class="bi bi-bank me-2"></i><span>Accounting</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="all" href="facilities.html">
+          <i class="bi bi-card-checklist me-2"></i><span>Facilities</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="finance" href="residential.html">
+          <i class="bi bi-houses me-2"></i><span>Residential</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="finance" href="utilities.html">
+          <i class="bi bi-lightning-charge me-2"></i><span>Utilities</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="admin" href="cashflow.html">
+          <i class="bi bi-cash-stack me-2"></i><span>Cash Flow</span>
+        </a>
+
+        <a class="nav-link d-flex align-items-center" data-role="admin" href="admin-settings.html">
+          <i class="bi bi-gear me-2"></i><span>Admin Settings</span>
+        </a>
+
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div id="main" class="main flex-grow-1">
+      <main class="content p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="mb-0">Users Management</h2>
+          <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <i class="bi bi-plus-circle me-1"></i> Add New User
+          </button>
+        </div>
+
+        <!-- SEARCH AND FILTERS -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input type="text" class="form-control" placeholder="Search users by name, email, or ID..."
+                    id="searchInput">
+                  <button class="btn btn-outline-secondary" type="button" id="clearSearch">Clear</button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <select class="form-select" id="roleFilter">
+                  <option value="">All Roles</option>
+                  <option value="superadmin">Super Admin</option>
+                  <option value="finance">Finance Officer</option>
+                  <option value="membership">Membership Officer</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <select class="form-select" id="statusFilter">
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USERS TABLE -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 40px;">
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input" type="checkbox" id="selectAllHeader">
+                      </div>
+                    </th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input row-checkbox" type="checkbox" data-id="${user.id}">
+                      </div>
+                    </td>
+                    <td>U001</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-primary me-2">
+                          <span class="avatar-text">AA</span>
+                        </div>
+                        <div>
+                          <div class="fw-bold">Ahmed Ali</div>
+                          <small class="text-muted">Super Admin</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>ahmed.ali@gymkhana.com</td>
+                    <td><span class="badge bg-primary">Super Admin</span></td>
+                    <td><span class="badge bg-success">Active</span></td>
+                    <td>2024-01-15 14:30</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" title="Edit" data-bs-toggle="modal"
+                          data-bs-target="#editUserModal">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" title="Delete" onclick="confirmDelete('U001')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input row-checkbox" type="checkbox" data-id="${user.id}">
+                      </div>
+                    </td>
+                    <td>U002</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-success me-2">
+                          <span class="avatar-text">SR</span>
+                        </div>
+                        <div>
+                          <div class="fw-bold">Sarah Rahman</div>
+                          <small class="text-muted">Finance Officer</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>sarah.rahman@gymkhana.com</td>
+                    <td><span class="badge bg-success">Finance Officer</span></td>
+                    <td><span class="badge bg-success">Active</span></td>
+                    <td>2024-01-14 09:15</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" title="Edit" data-bs-toggle="modal"
+                          data-bs-target="#editUserModal">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" title="Delete" onclick="confirmDelete('U002')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input row-checkbox" type="checkbox" data-id="${user.id}">
+                      </div>
+                    </td>
+                    <td>U003</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-warning me-2">
+                          <span class="avatar-text">MK</span>
+                        </div>
+                        <div>
+                          <div class="fw-bold">Muhammad Khan</div>
+                          <small class="text-muted">Membership Officer</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>m.khan@gymkhana.com</td>
+                    <td><span class="badge bg-warning">Membership Officer</span></td>
+                    <td><span class="badge bg-danger">Inactive</span></td>
+                    <td>2024-01-10 11:45</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" title="Edit" data-bs-toggle="modal"
+                          data-bs-target="#editUserModal">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" title="Delete" onclick="confirmDelete('U003')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input row-checkbox" type="checkbox" data-id="${user.id}">
+                      </div>
+                    </td>
+                    <td>U004</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-info me-2">
+                          <span class="avatar-text">FS</span>
+                        </div>
+                        <div>
+                          <div class="fw-bold">Fatima Shah</div>
+                          <small class="text-muted">Finance Officer</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>fatima.shah@gymkhana.com</td>
+                    <td><span class="badge bg-success">Finance Officer</span></td>
+                    <td><span class="badge bg-success">Active</span></td>
+                    <td>2024-01-15 16:20</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" title="Edit" data-bs-toggle="modal"
+                          data-bs-target="#editUserModal">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" title="Delete" onclick="confirmDelete('U004')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <input class="form-check-input row-checkbox" type="checkbox" data-id="${user.id}">
+                      </div>
+                    </td>
+                    <td>U005</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-secondary me-2">
+                          <span class="avatar-text">ZA</span>
+                        </div>
+                        <div>
+                          <div class="fw-bold">Zain Ahmed</div>
+                          <small class="text-muted">Membership Officer</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>zain.ahmed@gymkhana.com</td>
+                    <td><span class="badge bg-warning">Membership Officer</span></td>
+                    <td><span class="badge bg-success">Active</span></td>
+                    <td>2024-01-14 13:10</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" title="Edit" data-bs-toggle="modal"
+                          data-bs-target="#editUserModal">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" title="Delete" onclick="confirmDelete('U005')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <nav aria-label="Users pagination" class="mt-3">
+              <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ADD USER MODAL -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addUserForm">
+            <div class="mb-3">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email Address *</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Role *</label>
+              <select class="form-select" name="role" required>
+                <option value="">Select Role</option>
+                <option value="superadmin">Super Admin</option>
+                <option value="finance">Finance Officer</option>
+                <option value="membership">Membership Officer</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password *</label>
+              <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirm Password *</label>
+              <input type="password" class="form-control" name="confirmPassword" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="addUserForm" class="btn btn-gold">Add User</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT USER MODAL -->
+
+  <div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editUserForm">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Role</label>
+              <select class="form-select" name="role" required>
+                <option value="superadmin">Super Admin</option>
+                <option value="finance">Finance Officer</option>
+                <option value="membership">Membership Officer</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" name="status" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="resetPassword" name="resetPassword">
+                <label class="form-check-label" for="resetPassword">
+                  Reset Password (new password will be "password123")
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="editUserForm" class="btn btn-gold">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Users data storage
+    let usersData = [
+      {
+        id: 'U001',
+        name: 'Ahmed Ali',
+        email: 'ahmed.ali@gymkhana.com',
+        role: 'superadmin',
+        status: 'active',
+        lastLogin: '2024-01-15 14:30',
+        avatarInitials: 'AA',
+        avatarColor: 'primary'
+      },
+      {
+        id: 'U002',
+        name: 'Sarah Rahman',
+        email: 'sarah.rahman@gymkhana.com',
+        role: 'finance',
+        status: 'active',
+        lastLogin: '2024-01-14 09:15',
+        avatarInitials: 'SR',
+        avatarColor: 'success'
+      },
+      {
+        id: 'U003',
+        name: 'Muhammad Khan',
+        email: 'm.khan@gymkhana.com',
+        role: 'membership',
+        status: 'inactive',
+        lastLogin: '2024-01-10 11:45',
+        avatarInitials: 'MK',
+        avatarColor: 'warning'
+      },
+      {
+        id: 'U004',
+        name: 'Fatima Shah',
+        email: 'fatima.shah@gymkhana.com',
+        role: 'finance',
+        status: 'active',
+        lastLogin: '2024-01-15 16:20',
+        avatarInitials: 'FS',
+        avatarColor: 'info'
+      },
+      {
+        id: 'U005',
+        name: 'Zain Ahmed',
+        email: 'zain.ahmed@gymkhana.com',
+        role: 'membership',
+        status: 'active',
+        lastLogin: '2024-01-14 13:10',
+        avatarInitials: 'ZA',
+        avatarColor: 'secondary'
+      }
+    ];
+
+    let editingUserId = null;
+
+    // Initialize everything when DOM is ready
+    document.addEventListener('DOMContentLoaded', function () {
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobileMenuToggle');
+      const sidebar = document.getElementById('sidebar');
+
+      if (mobileToggle && sidebar) {
+        mobileToggle.addEventListener('click', function () {
+          sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+          if (window.innerWidth <= 768) {
+            if (!sidebar.contains(event.target) && !mobileToggle.contains(event.target)) {
+              sidebar.classList.remove('active');
+            }
+          }
+        });
+      }
+
+      // Close sidebar when clicking a nav link on mobile
+      document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+        link.addEventListener('click', function () {
+          if (window.innerWidth <= 768) {
+            if (sidebar) sidebar.classList.remove('active');
+          }
+        });
+      });
+
+      // Initialize users table
+      renderUsersTable();
+      initializeEventListeners();
+    });
+
+    // Render users table
+    function renderUsersTable() {
+      const tbody = document.getElementById('usersTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+
+      usersData.forEach(user => {
+        const roleBadge = {
+          'superadmin': 'bg-primary',
+          'finance': 'bg-success',
+          'membership': 'bg-warning'
+        }[user.role] || 'bg-secondary';
+
+        const roleText = {
+          'superadmin': 'Super Admin',
+          'finance': 'Finance Officer',
+          'membership': 'Membership Officer'
+        }[user.role] || user.role;
+
+        const statusBadge = user.status === 'active' ? 'bg-success' : 'bg-danger';
+        const statusText = user.status === 'active' ? 'Active' : 'Inactive';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td>
+          <div class="d-flex justify-content-center">
+            <input class="form-check-input row-checkbox" type="checkbox" data-id="${user.id}">
+          </div>
+        </td>
+        <td>${user.id}</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <div class="avatar-circle bg-${user.avatarColor} me-2">
+              <span class="avatar-text">${user.avatarInitials}</span>
+            </div>
+            <div>
+              <div class="fw-bold">${user.name}</div>
+              <small class="text-muted">${roleText}</small>
+            </div>
+          </div>
+        </td>
+        <td>${user.email}</td>
+        <td><span class="badge ${roleBadge}">${roleText}</span></td>
+        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+        <td>${user.lastLogin}</td>
+        <td>
+          <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-primary edit-btn" title="Edit" data-id="${user.id}">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-outline-danger delete-btn" title="Delete" data-id="${user.id}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </td>
+      `;
+        tbody.appendChild(row);
+      });
+
+      // Re-attach event listeners after rendering
+      attachRowEventListeners();
+      filterTable(); // Apply any existing filters
+    }
+
+    // Initialize all event listeners
+    function initializeEventListeners() {
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', filterTable);
+      }
+
+      // Clear search
+      const clearSearchBtn = document.getElementById('clearSearch');
+      if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function () {
+          if (searchInput) searchInput.value = '';
+          filterTable();
+        });
+      }
+
+      // Select all checkbox
+      const selectAllCheckbox = document.getElementById('selectAllHeader');
+      if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function (e) {
+          const checkboxes = document.querySelectorAll('.row-checkbox');
+          checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
+        });
+      }
+
+      // Filter by role and status
+      const roleFilter = document.getElementById('roleFilter');
+      const statusFilter = document.getElementById('statusFilter');
+
+      if (roleFilter) roleFilter.addEventListener('change', filterTable);
+      if (statusFilter) statusFilter.addEventListener('change', filterTable);
+
+      // Bulk delete selected
+      const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+      if (bulkDeleteBtn) {
+        bulkDeleteBtn.addEventListener('click', bulkDeleteSelected);
+      }
+
+      // Add User form submission
+      const addUserForm = document.getElementById('addUserForm');
+      if (addUserForm) {
+        addUserForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          addUser();
+        });
+      }
+
+      // Edit User form submission
+      const editUserForm = document.getElementById('editUserForm');
+      if (editUserForm) {
+        editUserForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          updateUser();
+        });
+      }
+
+      // Modal close handlers
+      const addModal = document.getElementById('addUserModal');
+      const editModal = document.getElementById('editUserModal');
+
+      if (addModal) {
+        addModal.addEventListener('hidden.bs.modal', function () {
+          const form = document.getElementById('addUserForm');
+          if (form) form.reset();
+        });
+      }
+
+      if (editModal) {
+        editModal.addEventListener('hidden.bs.modal', function () {
+          editingUserId = null;
+          const form = document.getElementById('editUserForm');
+          if (form) form.reset();
+        });
+      }
+    }
+
+    // Attach event listeners to table rows
+    function attachRowEventListeners() {
+      // Edit buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const userId = this.getAttribute('data-id');
+          editUser(userId);
+        });
+      });
+
+      // Delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const userId = this.getAttribute('data-id');
+          deleteUser(userId);
+        });
+      });
+    }
+
+    // Filter table based on search and filters
+    function filterTable() {
+      const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+      const roleFilter = document.getElementById('roleFilter')?.value || '';
+      const statusFilter = document.getElementById('statusFilter')?.value || '';
+      const rows = document.querySelectorAll('#usersTableBody tr');
+
+      rows.forEach(row => {
+        const id = row.cells[1]?.textContent.toLowerCase() || '';
+        const name = row.cells[2]?.textContent.toLowerCase() || '';
+        const email = row.cells[3]?.textContent.toLowerCase() || '';
+        const role = row.cells[4]?.textContent.toLowerCase() || '';
+        const status = row.cells[5]?.textContent.toLowerCase() || '';
+
+        const searchMatch = !searchTerm ||
+          id.includes(searchTerm) ||
+          name.includes(searchTerm) ||
+          email.includes(searchTerm);
+
+        const roleMatch = !roleFilter || role.includes(roleFilter);
+        const statusMatch = !statusFilter || status.includes(statusFilter);
+
+        row.style.display = searchMatch && roleMatch && statusMatch ? '' : 'none';
+      });
+    }
+
+    // Generate new user ID
+    function generateUserId() {
+      const lastId = usersData.reduce((max, user) => {
+        const num = parseInt(user.id.substring(1));
+        return num > max ? num : max;
+      }, 0);
+      return `U${String(lastId + 1).padStart(3, '0')}`;
+    }
+
+    // Generate avatar initials
+    function generateInitials(name) {
+      return name.split(' ').map(word => word[0]).join('').toUpperCase().substring(0, 2);
+    }
+
+    // Get random avatar color
+    function getRandomAvatarColor() {
+      const colors = ['primary', 'success', 'warning', 'info', 'secondary', 'danger'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    // Add new user
+    function addUser() {
+      const form = document.getElementById('addUserForm');
+      if (!form) return;
+
+      const name = form.querySelector('input[name="name"]')?.value;
+      const email = form.querySelector('input[name="email"]')?.value;
+      const role = form.querySelector('select[name="role"]')?.value;
+      const password = form.querySelector('input[name="password"]')?.value;
+
+      if (!name || !email || !role || !password) {
+        alert('Please fill all required fields!');
+        return;
+      }
+
+      const newUser = {
+        id: generateUserId(),
+        name: name,
+        email: email,
+        role: role,
+        status: 'active',
+        lastLogin: new Date().toLocaleDateString('en-CA') + ' ' +
+          new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+        avatarInitials: generateInitials(name),
+        avatarColor: getRandomAvatarColor()
+      };
+
+      usersData.push(newUser);
+      renderUsersTable();
+
+      // Show success message
+      showNotification(`User ${newUser.name} added successfully!`, 'success');
+
+      // Close modal
+      const modalElement = document.getElementById('addUserModal');
+      if (modalElement) {
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) modal.hide();
+      }
+
+      // Reset form
+      form.reset();
+    }
+
+    // Edit user
+    function editUser(userId) {
+      const user = usersData.find(u => u.id === userId);
+      if (!user) return;
+
+      editingUserId = userId;
+
+      // Fill edit form
+      const form = document.getElementById('editUserForm');
+      if (!form) return;
+
+      form.querySelector('input[name="name"]').value = user.name;
+      form.querySelector('input[name="email"]').value = user.email;
+      form.querySelector('select[name="role"]').value = user.role;
+      form.querySelector('select[name="status"]').value = user.status;
+
+      // Show edit modal
+      const editModalElement = document.getElementById('editUserModal');
+      if (editModalElement) {
+        const editModal = new bootstrap.Modal(editModalElement);
+        editModal.show();
+      }
+    }
+
+    // Update user
+    function updateUser() {
+      if (!editingUserId) return;
+
+      const form = document.getElementById('editUserForm');
+      if (!form) return;
+
+      const name = form.querySelector('input[name="name"]')?.value;
+      const email = form.querySelector('input[name="email"]')?.value;
+      const role = form.querySelector('select[name="role"]')?.value;
+      const status = form.querySelector('select[name="status"]')?.value;
+
+      const userIndex = usersData.findIndex(u => u.id === editingUserId);
+      if (userIndex === -1) return;
+
+      // Update user data
+      usersData[userIndex] = {
+        ...usersData[userIndex],
+        name: name,
+        email: email,
+        role: role,
+        status: status,
+        avatarInitials: generateInitials(name)
+      };
+
+      renderUsersTable();
+
+      // Show success message
+      showNotification(`User ${name} updated successfully!`, 'success');
+
+      // Close modal
+      const modalElement = document.getElementById('editUserModal');
+      if (modalElement) {
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) modal.hide();
+      }
+
+      editingUserId = null;
+    }
+
+    // Delete single user
+    function deleteUser(userId) {
+      if (!confirm(`Are you sure you want to delete user ${userId}? This action cannot be undone.`)) {
+        return;
+      }
+
+      const userIndex = usersData.findIndex(u => u.id === userId);
+      if (userIndex === -1) return;
+
+      const userName = usersData[userIndex].name;
+      usersData.splice(userIndex, 1);
+      renderUsersTable();
+
+      showNotification(`User ${userName} deleted successfully!`, 'danger');
+    }
+
+    // Bulk delete selected users
+    function bulkDeleteSelected() {
+      const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+      const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.getAttribute('data-id'));
+
+      if (selectedIds.length === 0) {
+        alert('Please select at least one user to delete.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete ${selectedIds.length} selected user(s)? This action cannot be undone.`)) {
+        return;
+      }
+
+      // Remove selected users
+      usersData = usersData.filter(user => !selectedIds.includes(user.id));
+      renderUsersTable();
+
+      // Uncheck select all checkbox
+      const selectAllCheckbox = document.getElementById('selectAllHeader');
+      if (selectAllCheckbox) selectAllCheckbox.checked = false;
+
+      showNotification(`${selectedIds.length} user(s) deleted successfully!`, 'danger');
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+      // Remove existing notification if any
+      const existingNotification = document.querySelector('.custom-notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+
+      const notification = document.createElement('div');
+      notification.className = `custom-notification alert alert-${type} alert-dismissible fade show`;
+      notification.innerHTML = `
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+      // Add styles for notification
+      notification.style.cssText = `
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    `;
+
+      document.body.appendChild(notification);
+
+      // Auto remove after 3 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 3000);
+    }
+  </script>
+
+  <style>
+    .avatar-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .avatar-text {
+      font-size: 0.8rem;
+    }
+
+    .badge {
+      padding: 0.4em 0.8em;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-danger {
+      border-width: 1px;
+    }
+
+    .btn-group-sm .btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    /* Add active state to Users nav link */
+    .nav-link.active {
+      background-color: rgba(255, 215, 0, 0.1);
+      color: white;
+      font-weight: 900;
+      border-left: 3px solid #daa520;
+    }
+
+    .btn-gold {
+      background-color: #daa520;
+      border-color: #daa520;
+      color: white;
+    }
+
+    .btn-gold:hover {
+      background-color: #b8860b;
+      border-color: #b8860b;
+      color: white;
+    }
+
+    .btn-outline-gold {
+      color: #daa520;
+      border-color: #daa520;
+    }
+
+    .btn-outline-gold:hover {
+      background-color: #daa520;
+      color: white;
+    }
+  </style>
+</body>
+
+</html>
