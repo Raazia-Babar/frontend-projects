@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MSI Trainings | Empowering Your Future</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        primary: '#fcbb03',
+                        darkest: '#020617', 
+                        surface: '#0f172a',
+                        whitegrey: '#f1f5f9',
+                    }
+                }
+            }
+        }
+        
+    </script>
+
+    <style>
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob {
+        animation: blob 7s infinite alternate;
+    }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+    
+    @keyframes pulse-slow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    .animate-pulse-slow {
+        animation: pulse-slow 4s ease-in-out infinite;
+    }
+        .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .hero-gradient {
+            background: radial-gradient(circle at 0% 0%, rgba(252, 187, 3, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 100% 100%, rgba(15, 23, 42, 1) 0%, #020617 100%);
+        }
+        .text-glow { text-shadow: 0 0 15px rgba(252, 187, 3, 0.3); }
+    </style>
+</head>
+<body class="bg-darkest text-whitegrey antialiased">
+
+  <header x-data="{ mobileMenu: false, scrolled: false }" 
+        @scroll.window="scrolled = (window.pageYOffset > 20)"
+        :class="scrolled ? 'bg-darkest/90 backdrop-blur-xl border-b border-primary/20 py-3 shadow-2xl' : 'bg-transparent py-6'"
+        class="fixed w-full z-[100] transition-all duration-500 font-sans">
+    
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center">
+            
+            <a href="#home" class="flex items-center gap-4 group cursor-pointer">
+                <div class="relative">
+                    <div class="absolute -inset-1 bg-primary/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <img src="assets/images/logo_image.png" alt="MSI Logo" class="relative w-12 h-12 object-contain transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black tracking-tighter text-white leading-none">MSI</span>
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold">Trainings</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-2">
+                <ul class="flex items-center gap-1">
+                    <li><a href="#home" class="px-4 py-2 text-sm font-bold text-whitegrey hover:text-primary transition-all relative group">Home<span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span></a></li>
+                    <li><a href="#about" class="px-4 py-2 text-sm font-bold text-whitegrey hover:text-primary transition-all relative group">About<span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span></a></li>
+                    <li><a href="#courses" class="px-4 py-2 text-sm font-bold text-whitegrey hover:text-primary transition-all relative group">Courses<span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span></a></li>
+                    <li><a href="#stats" class="px-4 py-2 text-sm font-bold text-whitegrey hover:text-primary transition-all relative group">Stats<span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span></a></li>
+                    <li><a href="#why" class="px-4 py-2 text-sm font-bold text-whitegrey hover:text-primary transition-all relative group">Why Us<span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span></a></li>
+                    <li><a href="#contact" class="px-4 py-2 text-sm font-bold text-whitegrey hover:text-primary transition-all relative group">Contact<span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span></a></li>
+                </ul>
+                
+                <div class="ml-4 pl-4 border-l border-white/10">
+                    <a href="#apply" class="bg-primary hover:bg-yellow-500 text-darkest px-7 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-lg shadow-primary/10 hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0">
+                        Apply Now
+                    </a>
+                </div>
+            </nav>
+
+            <button @click="mobileMenu = !mobileMenu" class="lg:hidden p-2 text-whitegrey hover:text-primary transition-colors focus:outline-none">
+                <svg x-show="!mobileMenu" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <svg x-show="mobileMenu" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <div x-show="mobileMenu" 
+         x-transition:enter="transition ease-out duration-300" 
+         x-transition:enter-start="opacity-0 -translate-y-10" 
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 -translate-y-10"
+         class="lg:hidden absolute top-full left-0 w-full bg-darkest border-b border-primary/20 shadow-3xl">
+        <ul class="flex flex-col p-6 gap-4 font-bold text-lg uppercase">
+            <li><a @click="mobileMenu = false" href="#home" class="block hover:text-primary">Home</a></li>
+            <li><a @click="mobileMenu = false" href="#about" class="block hover:text-primary">About</a></li>
+            <li><a @click="mobileMenu = false" href="#courses" class="block hover:text-primary">Courses</a></li>
+            <li><a @click="mobileMenu = false" href="#stats" class="block hover:text-primary">Stats</a></li>
+            <li><a @click="mobileMenu = false" href="#why" class="block hover:text-primary">Why Us</a></li>
+            <li><a @click="mobileMenu = false" href="#contact" class="block hover:text-primary">Contact</a></li>
+            <li>
+                <a @click="mobileMenu = false" href="#apply" class="block bg-primary text-darkest text-center py-4 rounded-xl mt-2">
+                    Apply Now
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-darkest">
+    
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-blob"></div>
+        <div class="absolute top-1/2 -right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-20 left-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[80px] animate-blob animation-delay-4000"></div>
+    </div>
+
+    <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+        
+        <div class="space-y-8 lg:text-left text-center">
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md animate-fade-in-down">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                </span>
+                <p class="text-primary font-bold tracking-[0.2em] uppercase text-[10px] md:text-xs">Transform Passion into Profession</p>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-whitegrey leading-[0.9] tracking-tighter">
+                Learn Today, <br>
+                <span class="text-primary text-glow inline-block hover:scale-105 transition-transform duration-500 cursor-default">Live Tomorrow.</span>
+            </h1>
+
+            <p class="text-slate-400 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
+                At <span class="text-white font-bold">MetaSync Innovations</span>, we bridge the gap between education and industry. Learn cutting-edge digital skills from experts.
+            </p>
+
+            <div class="flex flex-wrap gap-5 justify-center lg:justify-start">
+                <a href="#courses" class="group relative px-8 py-4 bg-primary text-darkest font-black rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(252,187,3,0.5)] active:scale-95">
+                    <span class="relative z-10">Explore Courses</span>
+                    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </a>
+                <a href="#contact" class="px-8 py-4 border-2 border-white/10 hover:border-primary/50 text-white font-black rounded-2xl backdrop-blur-sm transition-all hover:bg-white/5 flex items-center gap-2 group">
+                    Join Our Community
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="relative group lg:block">
+        
+            <div class="relative z-10 p-2 md:p-4 glass-dark rounded-[2.5rem] border border-white/10 transform transition-all duration-700 group-hover:rotate-1 group-hover:scale-[1.02]">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800" class="relative rounded-3xl border border-white/10 shadow-2xl" alt="Hero"
+                     class="rounded-[2rem] w-full h-full object-cover shadow-2xl grayscale-[20%] group-hover:grayscale-0 transition-all duration-700">
+                
+                <div class="absolute bottom-10 -right-8 bg-darkest/80 backdrop-blur-2xl p-6 rounded-3xl border border-primary/30 shadow-2xl animate-pulse-slow">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center font-bold text-darkest">98%</div>
+                        <div>
+                            <p class="text-white font-bold text-sm">Success Rate</p>
+                            <p class="text-slate-400 text-xs">Industry Placement</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute inset-0 bg-primary/30 blur-[100px] rounded-full scale-75 group-hover:scale-100 transition-transform duration-700"></div>
+        </div>
+    </div>
+</section>
+
+   <section id="about" class="relative py-24 bg-darkest overflow-hidden">
+    
+    
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="mb-16 lg:mb-24 text-center lg:text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-4">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                <span class="text-primary font-bold uppercase tracking-[0.3em] text-[10px]">Get to know us</span>
+            </div>
+            <h2 class="text-5xl md:text-7xl font-black text-whitegrey uppercase tracking-tighter">
+                About <span class="text-primary underline decoration-white/10 underline-offset-[12px]">Us</span>
+            </h2>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+            
+            <div class="relative flex items-center justify-center lg:h-[600px]">
+                <div class="relative w-4/5 h-[400px] md:h-[500px] rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl z-20 group">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1000" alt="About MSI" 
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkest/80 to-transparent"></div>
+                </div>
+
+                <div class="absolute -top-10 -right-4 w-1/2 h-64 rounded-[2rem] overflow-hidden border border-primary/30 shadow-2xl z-30 hidden md:block animate-pulse-slow">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=400" 
+                         class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" alt="Students">
+                </div>
+
+                <div class="absolute -bottom-6 -left-4 bg-primary p-8 rounded-[2rem] shadow-2xl z-40 transform hover:-rotate-3 transition-transform cursor-pointer">
+                    <div class="text-darkest">
+                        <span class="text-5xl font-black leading-none">10+</span>
+                        <p class="text-xs font-bold uppercase tracking-widest mt-2">Years of Excellence</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="space-y-4">
+                    <h3 class="text-primary font-black uppercase tracking-[0.4em] text-sm italic">Our Story</h3>
+                    <h2 class="text-4xl md:text-6xl font-black text-whitegrey leading-tight">
+                        Empowering Minds, <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">Engineering Careers.</span>
+                    </h2>
+                </div>
+
+                <div class="space-y-6 text-slate-400 text-lg leading-relaxed">
+                    <p>
+                        MetaSync Innovations (MSI Trainings) wasn't just built to teach; it was built to <span class="text-white font-bold underline decoration-primary underline-offset-4">disrupt</span>. We noticed a massive gap between what universities teach and what the industry actually pays for.
+                    </p>
+                    <p>
+                        Our mission is to turn your curiosity into a high-income skill set through hands-on, project-based learning led by trainers who are active in the global tech market.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <template x-for="item in [
+                        'Industry Expert Trainers', 
+                        'Hands-on Projects', 
+                        'Global Certifications', 
+                        'Career Mentorship'
+                    ]">
+                        <div class="flex items-center gap-3 p-4 rounded-2xl glass-dark border border-white/5 hover:border-primary/50 hover:bg-white/5 transition-all group">
+                            <span class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-darkest transition-colors font-bold text-sm">✔</span>
+                            <span class="text-sm font-bold text-whitegrey" x-text="item"></span>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="pt-4">
+                    <a href="#courses" class="inline-flex items-center gap-4 text-primary font-black text-sm uppercase tracking-widest group">
+                        Discover our philosophy 
+                        <span class="w-12 h-[2px] bg-primary group-hover:w-20 transition-all"></span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+   <section id="courses" class="relative py-24 bg-darkest overflow-hidden">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-4">
+                    <span class="text-primary font-bold uppercase tracking-[0.3em] text-[10px]">Future-Proof Your Career</span>
+                </div>
+                <h2 class="text-5xl md:text-7xl font-black text-whitegrey uppercase tracking-tighter leading-none">
+                    Our <span class="text-primary">Courses</span>
+                </h2>
+            </div>
+            <p class="text-slate-500 font-medium md:max-w-[300px] text-sm lg:text-base border-l border-white/10 pl-4">
+                Curated programs designed to take you from beginner to industry-ready in record time.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            
+            <div class="group relative bg-surface  backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">🎨</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">Graphic Designing</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Master the art of visual storytelling using Photoshop, Illustrator, and Branding basics.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">3 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">🎬</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">Video Editing</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Learn professional post-production with Premiere Pro, After Effects, and Color Grading.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">4 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">📈</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">Digital Marketing</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Drive growth using SEO, Social Media Marketing, and Paid Ad strategies (FB/IG/Google).</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">3 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">🌐</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">Web Development</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Become a Full-Stack pro with HTML/CSS, JS, PHP, and Laravel frameworks.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">6 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">📘</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">English Language</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Enhance Spoken English, IELTS, and PTE skills for international opportunities.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">2 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">🛒</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">E-Commerce</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Launch your business with Amazon VA training, Shopify, and local Dropshipping.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">3 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">🖥️</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">Office Management</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Master MS Office (Word, Excel, PPT) and essential computer office procedures.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">2 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="group relative bg-surface backdrop-blur-md p-8 rounded-[2.5rem] border border-primary hover:border-white transition-all duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-500">📐</div>
+                    <h4 class="text-2xl font-extrabold text-whitegrey mb-3 group-hover:text-primary transition-colors">AutoCAD (2D/3D)</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Expert level architectural drafting and 3D modeling for engineers and designers.</p>
+                </div>
+                <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Duration</span>
+                        <span class="text-xs font-black text-primary">4 Months</span>
+                    </div>
+                    <a href="#apply" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-darkest transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+   <section id="stats" class="relative py-32 bg-[#020617] overflow-hidden">
+    
+    <div class="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none">
+        <span class="text-[25vw] font-black text-white uppercase tracking-tighter">SUCCESS</span>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-12" id="stats-container">
+            
+            <div class="text-center group">
+                <div class="relative inline-block mb-2">
+                    <h3 class="text-6xl md:text-8xl font-black text-primary leading-none counter" data-target="2500">0</h3>
+                    <span class="text-3xl md:text-5xl font-black text-primary absolute -right-8 top-0">+</span>
+                </div>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mt-4">Students Trained</p>
+                <div class="w-12 h-1 bg-primary/20 mx-auto mt-4 group-hover:w-20 group-hover:bg-primary transition-all duration-500"></div>
+            </div>
+
+            <div class="text-center group">
+                <div class="relative inline-block mb-2">
+                    <h3 class="text-6xl md:text-8xl font-black text-primary leading-none counter" data-target="180">0</h3>
+                    <span class="text-3xl md:text-5xl font-black text-primary absolute -right-8 top-0">+</span>
+                </div>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mt-4">Global Projects</p>
+                <div class="w-12 h-1 bg-primary/20 mx-auto mt-4 group-hover:w-20 group-hover:bg-primary transition-all duration-500"></div>
+            </div>
+
+            <div class="text-center group">
+                <div class="relative inline-block mb-2">
+                    <h3 class="text-6xl md:text-8xl font-black text-primary leading-none counter" data-target="25">0</h3>
+                    <span class="text-3xl md:text-5xl font-black text-primary absolute -right-8 top-0">+</span>
+                </div>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mt-4">Expert Tutors</p>
+                <div class="w-12 h-1 bg-primary/20 mx-auto mt-4 group-hover:w-20 group-hover:bg-primary transition-all duration-500"></div>
+            </div>
+
+            <div class="text-center group">
+                <div class="relative inline-block mb-2">
+                    <h3 class="text-6xl md:text-8xl font-black text-primary leading-none counter" data-target="98">0</h3>
+                    <span class="text-3xl md:text-5xl font-black text-primary absolute -right-10 top-0">%</span>
+                </div>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mt-4">Success Rate</p>
+                <div class="w-12 h-1 bg-primary/20 mx-auto mt-4 group-hover:w-20 group-hover:bg-primary transition-all duration-500"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="why" class="relative py-24 bg-[#0f172a] overflow-hidden">
+    
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/2 pointer-events-none"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="space-y-8">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-4">
+                        <span class="text-primary font-bold uppercase tracking-[0.3em] text-[10px]">The MSI Advantage</span>
+                    </div>
+                    <h2 class="text-5xl md:text-7xl font-black text-whitegrey uppercase tracking-tighter leading-none">
+                        Why <span class="text-primary">Join</span> Us?
+                    </h2>
+                </div>
+
+                <p class="text-slate-400 text-lg leading-relaxed max-w-xl">
+                    We don't just provide tutorials; we provide a <span class="text-white font-bold">career ecosystem</span>. Our methodology is built on three core pillars that guarantee your growth in the digital landscape.
+                </p>
+
+                <div class="relative inline-block group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-primary to-yellow-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div class="relative bg-darkest border border-white/10 p-8 rounded-3xl flex items-center gap-6">
+                        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-darkest shadow-[0_0_20px_rgba(252,187,3,0.4)]">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m18.236 0a11.955 11.955 0 01-3.898 7.716c-1.203 1.203-2.512 2.157-3.92 2.802a11.955 11.955 0 01-3.898 7.715c-1.203-1.203-2.512-2.157-3.92-2.802a11.955 11.955 0 01-3.898-7.716c1.203-1.203 2.512-2.157 3.92-2.802A11.955 11.955 0 0112 2.944a11.955 11.955 0 018.618 3.04z"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-black text-xl italic uppercase">ISO Certified</h4>
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Quality Training Standards</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid gap-6">
+                
+                <div class="group relative bg-darkest p-8 rounded-[2rem] border-2 border-white/5 hover:border-primary transition-all duration-500 shadow-xl overflow-hidden">
+                    <div class="relative z-10 flex gap-6">
+                        <div class="text-4xl group-hover:scale-110 transition-transform duration-500">👨‍🏫</div>
+                        <div>
+                            <h4 class="text-xl font-black text-whitegrey uppercase mb-2 group-hover:text-primary transition-colors">Expert Mentorship</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Learn directly from industry veterans who have worked on international projects and top-tier agencies.</p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-primary/5 rounded-full group-hover:bg-primary/10 transition-all duration-700"></div>
+                </div>
+
+                <div class="group relative bg-darkest p-8 rounded-[2rem] border-2 border-white/5 hover:border-primary transition-all duration-500 shadow-xl overflow-hidden">
+                    <div class="relative z-10 flex gap-6">
+                        <div class="text-4xl group-hover:scale-110 transition-transform duration-500">💻</div>
+                        <div>
+                            <h4 class="text-xl font-black text-whitegrey uppercase mb-2 group-hover:text-primary transition-colors">Hands-on Labs</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">100% practical training. You don't just watch; you build real-world applications and professional portfolios.</p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-primary/5 rounded-full group-hover:bg-primary/10 transition-all duration-700"></div>
+                </div>
+
+                <div class="group relative bg-darkest p-8 rounded-[2rem] border-2 border-white/5 hover:border-primary transition-all duration-500 shadow-xl overflow-hidden">
+                    <div class="relative z-10 flex gap-6">
+                        <div class="text-4xl group-hover:scale-110 transition-transform duration-500">🚀</div>
+                        <div>
+                            <h4 class="text-xl font-black text-whitegrey uppercase mb-2 group-hover:text-primary transition-colors">Job Placement</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Our dedicated career cell helps you with resume building, interview prep, and connecting you with top employers.</p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-primary/5 rounded-full group-hover:bg-primary/10 transition-all duration-700"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section id="contact" class="relative py-24 bg-darkest overflow-hidden">
+    
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="bg-surface/30 rounded-[3rem] border border-white/5 overflow-hidden shadow-3xl">
+            <div class="grid lg:grid-cols-5 items-stretch">
+                
+                <div class="lg:col-span-2 bg-[#020617] p-12 lg:p-16 flex flex-col justify-between border-r border-white/5">
+                    <div>
+                        <h3 class="text-primary font-bold uppercase tracking-[0.4em] text-xs mb-4">Contact Us</h3>
+                        <h2 class="text-4xl md:text-5xl font-black text-whitegrey uppercase tracking-tighter leading-tight mb-8">
+                            Let's Talk <br><span class="text-primary text-glow">Future.</span>
+                        </h2>
+                        
+                        <div class="space-y-8 mt-12">
+                            <div class="flex items-start gap-6 group">
+                                <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-darkest transition-all shrink-0">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Email Us</p>
+                                    <p class="text-whitegrey font-bold text-lg">info@msitrainings.com</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-6 group">
+                                <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-darkest transition-all shrink-0">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Visit Us</p>
+                                    <p class="text-whitegrey font-bold text-lg">123 Tech Avenue, MSI Plaza, <br>Dahranwala, PK</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-12 border-t border-white/5 flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-primary hover:text-darkest transition-all text-whitegrey">FB</a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-primary hover:text-darkest transition-all text-whitegrey">IG</a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-primary hover:text-darkest transition-all text-whitegrey">LI</a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 p-12 lg:p-16">
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-primary uppercase tracking-widest">Full Name</label>
+                                <input type="text" placeholder="John Doe" class="w-full bg-darkest/50 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-all placeholder:text-slate-700">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-primary uppercase tracking-widest">Phone Number</label>
+                                <input type="tel" placeholder="+92 300 0000000" class="w-full bg-darkest/50 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-all placeholder:text-slate-700">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-primary uppercase tracking-widest">Select Course</label>
+                            <select class="w-full bg-darkest/50 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-all appearance-none">
+                                <option class="bg-darkest">Graphic Designing</option>
+                                <option class="bg-darkest">Video Editing</option>
+                                <option class="bg-darkest">Web Development</option>
+                                <option class="bg-darkest">Digital Marketing</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-primary uppercase tracking-widest">Your Message</label>
+                            <textarea rows="4" placeholder="How can we help you?" class="w-full bg-darkest/50 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-all placeholder:text-slate-700"></textarea>
+                        </div>
+
+                        <button class="w-full py-5 bg-primary text-darkest font-black uppercase tracking-widest rounded-2xl hover:shadow-[0_10px_30px_rgba(252,187,3,0.3)] hover:-translate-y-1 transition-all active:translate-y-0">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section class="relative py-24 bg-darkest overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="text-center mb-20">
+            <p class="text-primary font-bold uppercase tracking-[0.3em] text-xs mb-4">Got Questions?</p>
+            <h2 class="text-5xl md:text-7xl font-black text-whitegrey uppercase tracking-tighter">
+                Common <span class="text-primary">Inquiries</span>
+            </h2>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-4" x-data="{ active: null }">
+            
+            <div class="group border border-white/5 rounded-[2rem] bg-surface/20 transition-all duration-300"
+                 :class="active === 1 ? 'border-primary/50 bg-primary/5 shadow-2xl' : 'hover:border-white/20'">
+                <button @click="active = (active === 1 ? null : 1)" 
+                        class="w-full flex items-center justify-between p-8 text-left outline-none">
+                    <span class="text-lg md:text-xl font-bold text-whitegrey group-hover:text-white transition-colors">
+                        What are the prerequisites for joining?
+                    </span>
+                    <div class="relative w-8 h-8 flex items-center justify-center shrink-0">
+                        <div class="absolute w-full h-1 bg-primary/20 rounded-full group-hover:bg-primary transition-colors"></div>
+                        <div class="absolute w-1 h-full bg-primary/20 rounded-full group-hover:bg-primary transition-all duration-300"
+                             :class="active === 1 ? 'rotate-90 scale-0' : ''"></div>
+                    </div>
+                </button>
+                <div x-show="active === 1" 
+                     x-collapse
+                     class="px-8 pb-8 text-slate-400 leading-relaxed font-medium">
+                    Most of our courses are designed for beginners. You only need basic computer literacy and a passion for learning. For advanced courses like Laravel, basic HTML/CSS knowledge is recommended.
+                </div>
+            </div>
+
+            <div class="group border border-white/5 rounded-[2rem] bg-surface/20 transition-all duration-300"
+                 :class="active === 2 ? 'border-primary/50 bg-primary/5 shadow-2xl' : 'hover:border-white/20'">
+                <button @click="active = (active === 2 ? null : 2)" 
+                        class="w-full flex items-center justify-between p-8 text-left outline-none">
+                    <span class="text-lg md:text-xl font-bold text-whitegrey group-hover:text-white transition-colors">
+                        Do I get a certificate after completion?
+                    </span>
+                    <div class="relative w-8 h-8 flex items-center justify-center shrink-0">
+                        <div class="absolute w-full h-1 bg-primary/20 rounded-full group-hover:bg-primary"></div>
+                        <div class="absolute w-1 h-full bg-primary/20 rounded-full group-hover:bg-primary transition-all duration-300"
+                             :class="active === 2 ? 'rotate-90 scale-0' : ''"></div>
+                    </div>
+                </button>
+                <div x-show="active === 2" x-collapse class="px-8 pb-8 text-slate-400 leading-relaxed">
+                    Yes, every student receives a professionally recognized certificate from MSI Trainings. Our certifications are backed by our ISO status and accepted by various local and international firms.
+                </div>
+            </div>
+
+            <div class="group border border-white/5 rounded-[2rem] bg-surface/20 transition-all duration-300"
+                 :class="active === 3 ? 'border-primary/50 bg-primary/5 shadow-2xl' : 'hover:border-white/20'">
+                <button @click="active = (active === 3 ? null : 3)" 
+                        class="w-full flex items-center justify-between p-8 text-left outline-none">
+                    <span class="text-lg md:text-xl font-bold text-whitegrey group-hover:text-white transition-colors">
+                        Are classes physical or online?
+                    </span>
+                    <div class="relative w-8 h-8 flex items-center justify-center shrink-0">
+                        <div class="absolute w-full h-1 bg-primary/20 rounded-full group-hover:bg-primary"></div>
+                        <div class="absolute w-1 h-full bg-primary/20 rounded-full group-hover:bg-primary transition-all duration-300"
+                             :class="active === 3 ? 'rotate-90 scale-0' : ''"></div>
+                    </div>
+                </button>
+                <div x-show="active === 3" x-collapse class="px-8 pb-8 text-slate-400 leading-relaxed">
+                    We offer both! You can join us at our physical campus for hands-on labs or opt for our live instructor-led online sessions if you are located elsewhere.
+                </div>
+            </div>
+
+            <div class="group border border-white/5 rounded-[2rem] bg-surface/20 transition-all duration-300"
+                 :class="active === 4 ? 'border-primary/50 bg-primary/5 shadow-2xl' : 'hover:border-white/20'">
+                <button @click="active = (active === 4 ? null : 4)" 
+                        class="w-full flex items-center justify-between p-8 text-left outline-none">
+                    <span class="text-lg md:text-xl font-bold text-whitegrey group-hover:text-white transition-colors">
+                        Do you provide placement support?
+                    </span>
+                    <div class="relative w-8 h-8 flex items-center justify-center shrink-0">
+                        <div class="absolute w-full h-1 bg-primary/20 rounded-full group-hover:bg-primary"></div>
+                        <div class="absolute w-1 h-full bg-primary/20 rounded-full group-hover:bg-primary transition-all duration-300"
+                             :class="active === 4 ? 'rotate-90 scale-0' : ''"></div>
+                    </div>
+                </button>
+                <div x-show="active === 4" x-collapse class="px-8 pb-8 text-slate-400 leading-relaxed">
+                    Absolutely. Our career cell helps you build your portfolio, optimizes your LinkedIn profile, and connects you with our network of hiring partners.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+   <footer class="relative bg-darkest pt-32 pb-12 overflow-hidden">
+    
+    <div class="container mx-auto px-6 relative z-20">
+        <div class="relative -mt-48 mb-24">
+            <div class="absolute -inset-1 bg-gradient-to-r from-primary to-yellow-600 rounded-[3rem] blur opacity-30 group-hover:opacity-100 transition duration-1000"></div>
+            <div class="relative bg-[#020617] border border-white/10 rounded-[3rem] p-10 md:p-16 overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-10 relative z-10">
+                    <div class="text-center lg:text-left">
+                        <h2 class="text-4xl md:text-6xl font-black text-whitegrey uppercase tracking-tighter mb-4">
+                            Ready to <span class="text-primary text-glow">Sync</span> Your Future?
+                        </h2>
+                        <p class="text-slate-400 text-lg max-w-xl">
+                            Join over 2,500+ successful graduates. Limited seats available for the next cohort. 
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 shrink-0">
+                        <a href="#contact" class="px-10 py-5 bg-primary text-darkest font-black uppercase tracking-widest rounded-2xl hover:scale-105 hover:shadow-[0_20px_40px_rgba(252,187,3,0.3)] transition-all">
+                            Enroll Now
+                        </a>
+                        <a href="https://wa.me/yournumber" class="px-10 py-5 border-2 border-white/10 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                            <span>WhatsApp</span>
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-20 border-b border-white/5">
+            <div class="space-y-6">
+                <h3 class="text-2xl font-black text-primary italic uppercase tracking-tighter">MetaSync</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Pioneering digital excellence through industry-standard technical training. Transform your career with the mentors who know the market best.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-white/50 hover:bg-primary hover:text-darkest transition-all">FB</a>
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-white/50 hover:bg-primary hover:text-darkest transition-all">IG</a>
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-white/50 hover:bg-primary hover:text-darkest transition-all">YT</a>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h4 class="text-white font-bold uppercase tracking-widest text-sm">Navigation</h4>
+                <ul class="space-y-4">
+                    <li><a href="#home" class="text-slate-500 hover:text-primary transition-colors">Home</a></li>
+                    <li><a href="#about" class="text-slate-500 hover:text-primary transition-colors">About Us</a></li>
+                    <li><a href="#courses" class="text-slate-500 hover:text-primary transition-colors">All Courses</a></li>
+                    <li><a href="#contact" class="text-slate-500 hover:text-primary transition-colors">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h4 class="text-white font-bold uppercase tracking-widest text-sm">Top Courses</h4>
+                <ul class="space-y-4">
+                    <li><a href="#" class="text-slate-500 hover:text-primary transition-colors">Graphic Design</a></li>
+                    <li><a href="#" class="text-slate-500 hover:text-primary transition-colors">Web Development</a></li>
+                    <li><a href="#" class="text-slate-500 hover:text-primary transition-colors">Digital Marketing</a></li>
+                    <li><a href="#" class="text-slate-500 hover:text-primary transition-colors">Video Editing</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h4 class="text-white font-bold uppercase tracking-widest text-sm">Newsletter</h4>
+                <p class="text-slate-500 text-xs">Get the latest course updates and tech news directly in your inbox.</p>
+                <form class="relative">
+                    <input type="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-all text-sm">
+                    <button class="absolute right-2 top-1.5 bottom-1.5 bg-primary px-4 rounded-lg text-darkest font-bold text-xs">Join</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="py-12 flex flex-col md:row justify-between items-center gap-6">
+            <p class="text-slate-600 text-xs font-medium">
+                © 2026 MetaSync Innovations. All Rights Reserved. Designed by <span class="text-white">MSI Creative Team</span>
+            </p>
+            <div class="flex gap-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+</footer>
+</body>
+<script>
+  const observerOptions = {
+        threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.counter');
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = +counter.getAttribute('data-target');
+                        const count = +counter.innerText;
+                        const speed = 200; // Lower is slower
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 10);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    observer.observe(document.querySelector('#stats-container'));
+</script>
+</html>
